@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="tic-tac-toe.css">
+    <link rel="shortcut icon" 
+          href="https://mitchum.blog/wp-content/uploads/2019/05/favicon.png" />
+  </head>
+  <body>
+    <main>
+      <h1>Tic Tac Toe</h1>
+      <table class="board">
+        <tr>
+          <td>
+              <div id="0" class="square left top"></div>
+          </td>
+          <td>
+              <div id="1" class="square top v-middle"></div>
+          </td>
+          <td>
+              <div id="2" class="square right top"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+              <div id="3" class="square left h-middle"></div>
+          </td>
+          <td>
+              <div id="4" class="square v-middle h-middle"></div>
+          </td>
+          <td>
+              <div id="5" class="square right h-middle"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+              <div id="6" class="square left bottom"></div>
+          </td>
+          <td>
+              <div id="7" class="square bottom v-middle"></div>
+          </td>
+          <td>
+              <div id="8" class="square right bottom"></div>
+          </td>
+        </tr> 
+       </table>
+       <br>
+       <div id="messageBox">Pick a square!</div>
+       <br>
+       <div class="controls">
+         <button class="button" onclick="resetGame()">Play Again</button>&nbsp;
+         <form action="https://mitchum.blog/sneaky-subscribe" 
+               style="display: inline-block;">
+            <button class="button" type="submit">Click Me!</button>&nbsp;
+         </form>
+         <select id="difficulty">
+           <option value="moron" selected >Moron</option>
+           <option value="genius">Genius</option>
+         </select>
+        </div>
+    </main> 
+   <script src="tic-tac-toe.js"></script>
+  </body>
+</html>
