@@ -1,0 +1,36 @@
+#board
+{
+	margin: auto;
+	padding: 30px;
+	border-width:  30px;
+	border-radius : 20px;
+	background: rgb(255, 255, 153);
+	width: 390px;
+}
+
+#gametitle
+{
+	text-align: center;
+	margin: auto;
+	color: rgb(255, 255, 153);
+}
+
+img
+{
+	border-style: solid;
+	border-width: 5px;
+	border-color: rgb(255, 255, 153);
+}
+
+img:hover
+{
+	border-style: solid;
+	border-width: 5px;
+	border-color: gray;
+    border-radius: 10px;
+}
+
+body
+{
+	background: rgb(102, 178, 255);
+}
