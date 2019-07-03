@@ -41,15 +41,43 @@ var initializeCells = function( boardSize )
 
 		$(this).off().click(function(e)
 		{
-		    alert('click'); // true or false
+		    handleClick( $(this).attr("id") );
 		});
 
 		$(this).contextmenu(function(e)
 		{
-		    alert('right click'); // true or false
+		    handleRightClick( $(this).attr("id") );
 		    return false;
 		});
 	})
+}
+
+var handleClick = function( id )
+{
+	alert("click " + id );
+}
+
+var handleRightClick = function( id )
+{
+	var cell = board[id];
+	var $cell = $( '#' + id );
+	if( !cell.opened )
+	{
+		if( !cell.flagged && minesRemaining > 0 )
+		{
+			cell.flagged = true;
+			$cell.html( FLAG ).css( 'color', 'red');
+			minesRemaining--;
+		}
+		else if( cell.flagged )
+		{
+			cell.flagged = false;
+			$cell.html( "" ).css( 'color', 'black');
+			minesRemaining++;
+		}
+
+		$( '#mines-remaining').text( minesRemaining );
+	}
 }
 
 var randomlyAssignMines = function( board, mineCount )
@@ -115,7 +143,9 @@ var getRandomInteger = function( min, max )
 	return Math.floor( Math.random() * ( max - min ) ) + min;
 }
 
+var FLAG = "&#9873;";
 var boardSize = 10;
 var mines = 10;
+var minesRemaining = mines;
 initializeCells( boardSize );
 var board = Board( boardSize, mines );
