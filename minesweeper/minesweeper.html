@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="minesweeper.css">
     <link rel="shortcut icon" 
           href="https://mitchum.blog/wp-content/uploads/2019/05/favicon.png" />
-          <!--1: blue, 2: green, 3: red, 4: orange, flag: red-->
   </head>
   <body>
     <main>
@@ -122,13 +121,14 @@
       <div class="cell"></div>
     </div>
      <br>
-     
+     <strong><div id="messageBox">Make a Move!</div></strong>
+     <br>
      <div class="controls">
-      <div class="user-display" id="time">000</div>
-       <button class="button">Play Again</button>&nbsp;
+      <div class="user-display" id="time">0</div>
+       <button class="button" id="new-game-button">New Game</button>&nbsp;
        <form action="https://mitchum.blog/sneaky-subscribe" 
              style="display: inline-block;">
-          <button class="button" type="submit">Mystery</button>&nbsp;
+          <button class="button" type="submit">Do NOT Press</button>&nbsp;
        </form>
         <div class="user-display" id="mines-remaining">10</div>
       </div>
