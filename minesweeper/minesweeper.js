@@ -78,36 +78,93 @@ var handleClick = function( id )
 {
 	if( !gameOver )
 	{
-		var cell = board[id];
-		var $cell = $( '#' + id );
-		if( !cell.opened )
+		if( ctrlIsPressed )
 		{
-			if( !cell.flagged )
+			handleCtrlClick( id );
+		}
+		else
+		{
+			var cell = board[id];
+			var $cell = $( '#' + id );
+			if( !cell.opened )
 			{
-				if( cell.mined )
+				if( !cell.flagged )
 				{
-					loss( $cell );				
-				}
-				else
-				{
-					cell.opened = true;
-					if( cell.neighborMineCount > 0 )
+					if( cell.mined )
 					{
-						var color = getNumberColor( cell.neighborMineCount );
-						$cell.html( cell.neighborMineCount ).css( 'color', color );
+						loss();		
+						$cell.html( MINE ).css( 'color', 'red');		
 					}
 					else
 					{
-						$cell.html( "" ).css( 'background-image', 'radial-gradient(#e6e6e6,#c9c7c7)');
-						var neighbors = getNeighbors( id );
-						for( var i = 0; i < neighbors.length; i++ )
+						cell.opened = true;
+						if( cell.neighborMineCount > 0 )
 						{
-							var neighbor = neighbors[i];
-							if( typeof board[neighbor] !== 'undefined' && !board[neighbor].flagged && !board[neighbor].opened )
+							var color = getNumberColor( cell.neighborMineCount );
+							$cell.html( cell.neighborMineCount ).css( 'color', color );
+						}
+						else
+						{
+							$cell.html( "" ).css( 'background-image', 'radial-gradient(#e6e6e6,#c9c7c7)');
+							var neighbors = getNeighbors( id );
+							for( var i = 0; i < neighbors.length; i++ )
 							{
-								handleClick( neighbor );
+								var neighbor = neighbors[i];
+								if( typeof board[neighbor] !== 'undefined' && !board[neighbor].flagged && !board[neighbor].opened )
+								{
+									handleClick( neighbor );
+								}
 							}
 						}
+					}
+				}
+			}
+		}
+	}
+}
+
+var handleCtrlClick = function( id )
+{
+	var cell = board[id];
+	var $cell = $( '#' + id );
+	if( cell.opened && cell.neighborMineCount > 0 )
+	{
+		var neighbors = getNeighbors( id );
+		var flagCount = 0;
+		var flaggedCells = [];
+		var neighbor;
+		for( var i = 0; i < neighbors.length; i++ )
+		{
+			neighbor = board[neighbors[i]];
+			if( neighbor.flagged )
+			{
+				flaggedCells.push( neighbor );
+			}
+			flagCount += neighbor.flagged;
+		}
+
+		var lost = false;
+		if( flagCount === cell.neighborMineCount )
+		{
+			for( i = 0; i < flaggedCells.length; i++ )
+			{
+				if( flaggedCells[i].flagged && !flaggedCells[i].mined )
+				{
+					loss();
+					lost = true;
+					break;
+				}
+			}
+
+			if( !lost )
+			{
+				for( var i = 0; i < neighbors.length; i++ )
+				{
+					neighbor = board[neighbors[i]];
+					if( !neighbor.flagged && !neighbor.opened )
+					{
+						ctrlIsPressed = false;
+						handleClick( neighbor.id );
 					}
 				}
 			}
@@ -141,7 +198,7 @@ var handleRightClick = function( id )
 	}
 }
 
-var loss = function( $cell )
+var loss = function()
 {
 	gameOver = true;
 	$('#messageBox').text('Game Over!').css({'color':'white', 'background-color': 'red'});
@@ -153,7 +210,6 @@ var loss = function( $cell )
 			$('#' + board[cells[i]].id ).html( MINE ).css('color', 'black');
 		}
 	}
-	$cell.html( MINE ).css( 'color', 'red');
 	clearInterval(timeout);
 }
 
@@ -223,6 +279,7 @@ var getNeighbors = function( id )
 	   if ( neighbors[i].length > 2 ) 
 	   {
 	      neighbors.splice(i, 1); 
+	      i--;
 	   }
 	}
 
@@ -298,6 +355,18 @@ var mines = 10;
 var timer = 0;
 var timeout;
 var minesRemaining;
+
+$(document).keydown(function(event){
+    if(event.ctrlKey)
+        ctrlIsPressed = true;
+});
+
+$(document).keyup(function(){
+    ctrlIsPressed = false;
+});
+
+var ctrlIsPressed = false;
+
 $('#new-game-button').click( function(){
 	newGame( boardSize, mines );
 })
