@@ -281,6 +281,10 @@ var newGame = function( boardSize, mines )
 	timeout = setInterval(function () {
     // This will be executed after 1,000 milliseconds
     timer++;
+    if( timer >= 999 )
+    {
+    	timer = 999;
+    }
     $('#time').text(timer);
 	}, 1000);
 
