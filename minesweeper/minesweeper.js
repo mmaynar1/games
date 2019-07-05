@@ -33,7 +33,8 @@ var initializeCells = function( boardSize )
 	var column = 0;
 	$( ".cell" ).each( function(){
 		$(this).attr( "id", row + "" + column ).css('color', 'black').text("");
-		$('#' + row + "" + column ).css('background-image', 'radial-gradient(#fff,#e6e6e6)');
+		$('#' + row + "" + column ).css('background-image', 
+										'radial-gradient(#fff,#e6e6e6)');
 		column++;
 		if( column >= boardSize )
 		{
@@ -61,7 +62,8 @@ var initializeCells = function( boardSize )
 			if( isVictory )
 			{
 				gameOver = true;
-				$('#messageBox').text('You Win!').css({'color': 'white', 'background-color': 'green'});
+				$('#messageBox').text('You Win!').css({'color': 'white',
+													   'background-color': 'green'});
 				clearInterval( timeout );
 			}
 		});
@@ -105,12 +107,14 @@ var handleClick = function( id )
 						}
 						else
 						{
-							$cell.html( "" ).css( 'background-image', 'radial-gradient(#e6e6e6,#c9c7c7)');
+							$cell.html( "" )
+								 .css( 'background-image', 'radial-gradient(#e6e6e6,#c9c7c7)');
 							var neighbors = getNeighbors( id );
 							for( var i = 0; i < neighbors.length; i++ )
 							{
 								var neighbor = neighbors[i];
-								if( typeof board[neighbor] !== 'undefined' && !board[neighbor].flagged && !board[neighbor].opened )
+								if(  typeof board[neighbor] !== 'undefined' &&
+									 !board[neighbor].flagged && !board[neighbor].opened )
 								{
 									handleClick( neighbor );
 								}
@@ -201,13 +205,16 @@ var handleRightClick = function( id )
 var loss = function()
 {
 	gameOver = true;
-	$('#messageBox').text('Game Over!').css({'color':'white', 'background-color': 'red'});
+	$('#messageBox').text('Game Over!')
+					.css({'color':'white', 
+						  'background-color': 'red'});
 	var cells = Object.keys(board);
 	for( var i = 0; i < cells.length; i++ )
 	{
 		if( board[cells[i]].mined && !board[cells[i]].flagged )
 		{
-			$('#' + board[cells[i]].id ).html( MINE ).css('color', 'black');
+			$('#' + board[cells[i]].id ).html( MINE )
+										.css('color', 'black');
 		}
 	}
 	clearInterval(timeout);
@@ -216,7 +223,7 @@ var loss = function()
 var randomlyAssignMines = function( board, mineCount )
 {
 	var mineCooridinates = [];
-	for( var i = 0; i < mines; i++ )
+	for( var i = 0; i < mineCount; i++ )
 	{
 		var randomRowCoordinate = getRandomInteger( 0, boardSize );
 		var randomColumnCoordinate = getRandomInteger( 0, boardSize );
@@ -241,18 +248,16 @@ var calculateNeighborMineCounts = function( board, boardSize )
 	{
 		for( var column = 0; column < boardSize; column++ )
 		{
-			cell = board[row + "" + column];
+			var id = row + "" + column;
+			cell = board[id];
 			if( !cell.mined )
 			{
+				var neighbors = getNeighbors( id );
 				neighborMineCount = 0;
-				neighborMineCount += isMined( board, row - 1, column - 1 );
-				neighborMineCount += isMined( board, row - 1, column );
-				neighborMineCount += isMined( board, row - 1, column + 1 );
-				neighborMineCount += isMined( board, row, column - 1 );
-				neighborMineCount += isMined( board, row, column + 1 );
-				neighborMineCount += isMined( board, row + 1, column - 1 );
-				neighborMineCount += isMined( board, row + 1, column );
-				neighborMineCount += isMined( board, row + 1, column + 1 );
+				for( var i = 0; i < neighbors.length; i++ )
+				{
+					neighborMineCount += isMined( board, neighbors[i] );
+				}
 				cell.neighborMineCount = neighborMineCount;
 			}
 		}
@@ -308,9 +313,9 @@ var getNumberColor = function( number )
 	return color;
 }
 
-var isMined = function( board, row, column )
+var isMined = function( board, id )
 {	
-	var cell = board[row + "" + column];
+	var cell = board[id];
 	var mined = 0;
 	if( typeof cell !== 'undefined' )
 	{
@@ -327,7 +332,9 @@ var getRandomInteger = function( min, max )
 var newGame = function( boardSize, mines )
 {
 	$('#time').text("0");
-	$('#messageBox').text('Make a Move!').css({'color': 'rgb(255, 255, 153)', 'background-color': 'rgb(102, 178, 255)'});
+	$('#messageBox').text('Make a Move!')
+					.css({'color': 'rgb(255, 255, 153)', 
+						  'background-color': 'rgb(102, 178, 255)'});
 	minesRemaining = mines;
 	$( '#mines-remaining').text( minesRemaining );
 	gameOver = false;
