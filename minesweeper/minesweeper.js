@@ -373,8 +373,8 @@ $(document).keyup(function(){
 });
 
 var ctrlIsPressed = false;
+var board = newGame( boardSize, mines );
 
 $('#new-game-button').click( function(){
-	newGame( boardSize, mines );
+	board = newGame( boardSize, mines );
 })
-var board = newGame( boardSize, mines );
