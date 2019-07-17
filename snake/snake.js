@@ -34,38 +34,41 @@ function Snake( cell, startingLength, board )
 		snakeParts.push( bodyPart )
 	}
 
-
 	let grow = function() {
 		snakeParts.push( head );
 	}
 
 	let move = function( nextCell ) {
+		let cellType = nextCell.cellType;
 		let tail = snakeParts.pop();
 		tail.cellType = CELL_TYPE.EMPTY;
 		head = nextCell;
 		head.cellType = CELL_TYPE.SNAKE;
 		snakeParts.unshift( head );
+		snakeParts.forEach( function(part) {
+			part.cellType = CELL_TYPE.SNAKE;
+		})
+		return cellType;
 	}
 
 	let checkCrash = function( nextCell ) {
-		let crashed = snakeParts.some( function( cell ) {
-			return ( cell.row === nextCell.row && 
-					 cell.column === nextCell.column );
-		})
-
+		let crashed = ( typeof nextCell === 'undefined' );
 		if( !crashed )
 		{
-			crashed = nextCell.row <= -1 || 
-					  nextCell.column <= -1 || 
-					  nextCell.row >= board.rowCount ||
-					  nextCell.column >= board.columnCount;
+			crashed = snakeParts.some( function( cell ) {
+				return ( cell.row === nextCell.row && 
+						 cell.column === nextCell.column );
+			})
 		}
-
 		return crashed;
 	}
 
+	let getHead = function() {
+		return head;
+	}
+
 	return {
-		head: head,
+		getHead: getHead,
 		snakeParts: snakeParts,
 		grow: grow,
 		move: move,
@@ -85,6 +88,8 @@ function Board( rowCount, columnCount )
 	}
 
 	let render = function() {
+		let snakeCssClass = 'snake';
+		let foodCssClass = 'food';
 		for( let row = 0; row < rowCount; row++ )
 		{
 			for( let column = 0; column < columnCount; column++ )
@@ -93,11 +98,18 @@ function Board( rowCount, columnCount )
 				let element = document.getElementById( row + "_" + column );
 				if( cellType === CELL_TYPE.EMPTY )
 				{
-					element.classList.remove('snake');
+					element.classList.remove(snakeCssClass);
+					element.classList.remove(foodCssClass);
 				}
 				else if( cellType === CELL_TYPE.SNAKE )
 				{
-					element.classList.add('snake');
+					element.classList.add(snakeCssClass);
+					element.classList.remove(foodCssClass);
+				}
+				else if( cellType === CELL_TYPE.FOOD )
+				{
+					element.classList.add(foodCssClass);
+					element.classList.remove(snakeCssClass);
 				}
 			}
 		}
@@ -113,9 +125,17 @@ function Board( rowCount, columnCount )
 		cells[row][column].cellType = CELL_TYPE.FOOD;
 	}
 
+	let getColumnCount = function() {
+		return columnCount;
+	}
+
+	let getRowCount = function() {
+		return rowCount;
+	}
+
 	return {
-		rowCount: rowCount,
-		columnCount: columnCount,
+		getRowCount: getRowCount,
+		getColumnCount: getColumnCount,
 		cells: cells,
 		placeFood: placeFood,
 		render: render
@@ -132,17 +152,12 @@ function Game( snake, board )
 	let direction = DIRECTION.NONE;
 	let gameOver = false;
 
-	let setDirection = function( newDirection )
-	{
-		direction = newDirection;
-	}
-
 	let update = function( snake, board ) {
 		if( !gameOver )
 		{
 			if( direction !== DIRECTION.NONE )
 			{
-				let nextCell = getNextCell( snake.head, board );
+				let nextCell = getNextCell( snake.getHead(), board );
 
 				if( snake.checkCrash( nextCell ) ) 
 				{
@@ -151,8 +166,8 @@ function Game( snake, board )
 				}
 				else
 				{
-					snake.move( nextCell );
-					if( nextCell.cellType == CELL_TYPE.FOOD )
+					let nextCellType = snake.move( nextCell );
+					if( nextCellType == CELL_TYPE.FOOD )
 					{
 						snake.grow();
 						board.placeFood();
@@ -183,11 +198,27 @@ function Game( snake, board )
 			row++;
 		}
 
-		let nextCell = board.cells[row][column];
+		let nextCell;
+		if( row > -1 && row < board.getRowCount() && 
+			column > -1 && column < board.getColumnCount() )
+		{
+			nextCell = board.cells[row][column];
+		}
 		return nextCell;
 	};
 
+	let setDirection = function( newDirection )
+	{
+		direction = newDirection;
+	}
+
+	let getDirection = function()
+	{
+		return direction;
+	}
+
 	return {
+		getDirection: getDirection,
 		setDirection: setDirection,
 		gameOver: gameOver,
 		update: update
@@ -207,6 +238,28 @@ function initializeCells( columnCount )
 			column = 0;
 			row++;
 		}
+	});
+}
+
+function listenForInput( game )
+{
+	document.addEventListener('keydown', function( event ) {
+	    if(event.keyCode == 37 && game.getDirection() !== DIRECTION.RIGHT ) 
+	    {
+	    	game.setDirection( DIRECTION.LEFT );
+	    }
+	    else if(event.keyCode == 39 && game.getDirection() !== DIRECTION.LEFT ) 
+	    {
+	    	game.setDirection( DIRECTION.RIGHT );
+	    }
+	    else if(event.keyCode == 38 && game.getDirection() !== DIRECTION.DOWN )
+	    {
+	    	game.setDirection( DIRECTION.UP );
+	    }
+	    else if(event.keyCode == 40 && game.getDirection() !== DIRECTION.UP )
+	    {
+			game.setDirection( DIRECTION.DOWN );
+	    }
 	});
 }
 
@@ -246,6 +299,19 @@ function automatedTest()
 
 }
 
+var board = Board( 20, 20 );
+let snake = Snake( board.cells[5][5], 3, board );
+let game = Game( snake, board );
 initializeCells( 20 );
-automatedTest();
+board.placeFood();
+game.setDirection(DIRECTION.UP);
+board.render();
+listenForInput( game );
+setInterval( function(){
+	game.update( snake, board );
+	board.render();
+}, 200)
+
+
+//automatedTest();
 
