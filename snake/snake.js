@@ -4,7 +4,7 @@ const CELL_TYPE = Object.freeze({
 	SNAKE: "SNAKE"
 });
 
-let DIRECTION = Object.freeze({
+const DIRECTION = Object.freeze({
 	NONE: "NONE",
 	LEFT: "LEFT",
 	RIGHT: "RIGHT",
@@ -151,6 +151,7 @@ function Game( snake, board )
 {
 	let direction = DIRECTION.NONE;
 	let gameOver = false;
+	let score = 0;
 
 	let update = function( snake, board ) {
 		if( !gameOver )
@@ -169,6 +170,7 @@ function Game( snake, board )
 					let nextCellType = snake.move( nextCell );
 					if( nextCellType == CELL_TYPE.FOOD )
 					{
+						score += 100;
 						snake.grow();
 						board.placeFood();
 					}
@@ -207,6 +209,11 @@ function Game( snake, board )
 		return nextCell;
 	};
 
+	let getScore = function()
+	{
+		return score;
+	}
+
 	let setDirection = function( newDirection )
 	{
 		direction = newDirection;
@@ -218,6 +225,7 @@ function Game( snake, board )
 	}
 
 	return {
+		getScore: getScore,
 		getDirection: getDirection,
 		setDirection: setDirection,
 		gameOver: gameOver,
@@ -263,10 +271,17 @@ function listenForInput( game )
 	});
 }
 
-var board = Board( 20, 20 );
-let snake = Snake( board.cells[5][5], 3, board );
+
+const rowCount = 20;
+const columnCount =20;
+const startingLength = 5;
+
+var board = Board( rowCount, columnCount );
+let snake = Snake( board.cells[Math.floor(rowCount/2)][Math.floor(columnCount/2)],
+				   startingLength, 
+				   board );
 let game = Game( snake, board );
-initializeCells( 20 );
+initializeCells( columnCount );
 board.placeFood();
 game.setDirection(DIRECTION.UP);
 board.render();
