@@ -263,42 +263,6 @@ function listenForInput( game )
 	});
 }
 
-function automatedTest()
-{
-	var board = Board( 20, 20 );
-	let snake = Snake( board.cells[5][5], 3, board );
-	let game = Game( snake, board );
-
-	function assert(condition, message) 
-	{
-	    if (!condition) 
-	    {
-	        message = message || "Assertion failed";
-	        if (typeof Error !== "undefined") 
-	        {
-	            throw new Error(message);
-	        }
-	        throw message; // Fallback
-	    }
-	}
-
-
-/*	snake.snakeParts.push( Cell( 5, 4, CELL_TYPE.SNAKE ) );
-	snake.snakeParts.push( Cell( 5, 3, CELL_TYPE.SNAKE ) );*/
-	board.render();
-	assert( board.cells[5][5].cellType === CELL_TYPE.SNAKE );
-	assert( board.cells[6][5].cellType === CELL_TYPE.SNAKE );
-	assert( board.cells[7][5].cellType === CELL_TYPE.SNAKE );
-	game.setDirection( DIRECTION.UP );
-	game.update( snake, board );
-	board.render();
-	assert( board.cells[4][5].cellType === CELL_TYPE.SNAKE );
-	assert( board.cells[5][5].cellType === CELL_TYPE.SNAKE );
-	assert( board.cells[6][5].cellType === CELL_TYPE.SNAKE );
-	assert( board.cells[7][5].cellType === CELL_TYPE.EMPTY );
-
-}
-
 var board = Board( 20, 20 );
 let snake = Snake( board.cells[5][5], 3, board );
 let game = Game( snake, board );
@@ -310,8 +274,4 @@ listenForInput( game );
 setInterval( function(){
 	game.update( snake, board );
 	board.render();
-}, 200)
-
-
-//automatedTest();
-
+}, 120)
