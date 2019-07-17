@@ -40,6 +40,10 @@ h1 {
   background-color: rgb(255, 255, 153);
 }
 
+.food {
+  background-color: red;
+}
+
 /* Buttons */
 .button {
   display: inline-block;
