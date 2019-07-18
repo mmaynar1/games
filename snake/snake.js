@@ -271,6 +271,8 @@ function initializeCells( columnCount )
 	let cells = document.querySelectorAll('.cell');
 	cells.forEach( function(cell) {
 		cell.id = row + "_" + column;
+		cell.classList = "";
+		cell.classList.add("cell");
 		column++;
 		if( column >= columnCount )
 		{
@@ -294,7 +296,8 @@ function listenForInput( game )
 	    	   game.getLastDirection() !== DIRECTION.DOWN;
 	};
 
-	document.addEventListener('keydown', function( event ) {
+	let changeDirection = function( event )
+	{
 		const LEFT_ARROW = 37;
 		const RIGHT_ARROW = 39;
 		const UP_ARROW = 38;
@@ -315,25 +318,33 @@ function listenForInput( game )
 	    {
 			game.addDirection( DIRECTION.DOWN );
 	    }
-	});
+	};
+
+	document.onkeydown = null;
+	document.addEventListener('keydown', changeDirection );
 }
 
+function newGame()
+{
+	const rowCount = 20;
+	const columnCount =20;
+	const startingLength = 5;
 
-const rowCount = 20;
-const columnCount =20;
-const startingLength = 5;
-
-var board = Board( rowCount, columnCount );
-let snake = Snake( board.cells[Math.floor(rowCount/2)][Math.floor(columnCount/2)],
+	let board = Board( rowCount, columnCount );
+	let snake = Snake( board.cells[Math.floor(rowCount/2)][Math.floor(columnCount/2)],
 				   startingLength, 
 				   board );
-let game = Game( snake, board );
-initializeCells( columnCount );
-board.placeFood();
-game.addDirection(DIRECTION.UP);
-board.render();
-listenForInput( game );
-setInterval( function(){
+	let game = Game( snake, board );
+	initializeCells( columnCount );
+	board.placeFood();
+	game.addDirection(DIRECTION.UP);
+	board.render();
+	listenForInput( game );
+	let interval = setInterval( function() { 
 	game.update( snake, board );
 	board.render();
-}, 120)
+	}, 120)
+	return interval;
+}
+
+let snakeGame = newGame();
