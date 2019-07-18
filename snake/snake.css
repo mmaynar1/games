@@ -67,3 +67,49 @@ h1 {
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: rgb(102, 178, 255);
+  border-radius: 15px;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 10px solid rgb(255, 255, 153);
+  width: 40%; /* Could be more or less, depending on screen size */
+  text-align: center;
+}
+
+/* The Close Button */
+.close {
+  color: rgb(255, 255, 153);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#message {
+  font-size: 18pt;
+  font-weight: bold;
+  color: rgb(255, 255, 153);
+}

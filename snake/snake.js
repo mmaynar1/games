@@ -166,6 +166,8 @@ function Game( snake, board )
 					directions = [];
 					direction = DIRECTION.NONE;
 					gameOver = true;
+					modal.style.display = "block";
+					document.getElementById("message").innerHTML = "Game Over! You scored " + score + "  points!";
 				}
 				else
 				{
@@ -347,4 +349,11 @@ function newGame()
 	return interval;
 }
 
+let modal = document.getElementById("myModal");
+let closeModalButton = document.getElementsByClassName("close")[0];
+closeModalButton.onclick = function() {
+  modal.style.display = "none";
+  clearInterval(snakeGame);
+  snakeGame = newGame();
+}
 let snakeGame = newGame();

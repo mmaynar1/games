@@ -432,13 +432,26 @@
     </div>
      <br>
      <div class="controls">
-      <button class="button" type="button" onclick="clearInterval(snakeGame); snakeGame = newGame();">New Game</button>
-       <form action="https://mitchum.blog/sneaky-subscribe" 
+      
+
+      </div>
+
+                <!-- The Modal -->
+      <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p id="message">Game Over!</p>
+          <button class="button" type="button" onclick="closeModalButton.click();">Play Again!</button>
+          <form action="https://mitchum.blog/sneaky-subscribe" 
              style="display: inline-block;">
-          <button class="button" type="submit">Do NOT Press</button>&nbsp;
-       </form>
-      </div>    
-    </main> 
+            <button class="button" type="submit">Claim Your Prize!</button>&nbsp;
+          </form>
+        </div>
+
+      </div>  
+    </main>   
    <script src="snake.js"></script>
   </body>
 </html>
