@@ -149,6 +149,7 @@ function getRandomInteger( min, max )
 
 function Game( snake, board )
 {
+	let directions = [];
 	let direction = DIRECTION.NONE;
 	let gameOver = false;
 	let score = 0;
@@ -156,12 +157,13 @@ function Game( snake, board )
 	let update = function( snake, board ) {
 		if( !gameOver )
 		{
-			if( direction !== DIRECTION.NONE )
+			if( getFirstDirection() !== DIRECTION.NONE )
 			{
 				let nextCell = getNextCell( snake.getHead(), board );
 
 				if( snake.checkCrash( nextCell ) ) 
 				{
+					directions = [];
 					direction = DIRECTION.NONE;
 					gameOver = true;
 				}
@@ -182,6 +184,7 @@ function Game( snake, board )
 	let getNextCell = function( snakeHead, board ) {
 		let row = snakeHead.row;
 		let column = snakeHead.column;
+		direction = getFirstDirection();
 
 		if( direction === DIRECTION.RIGHT )
 		{
@@ -206,6 +209,7 @@ function Game( snake, board )
 		{
 			nextCell = board.cells[row][column];
 		}
+		directions.shift();
 		return nextCell;
 	};
 
@@ -214,9 +218,34 @@ function Game( snake, board )
 		return score;
 	}
 
-	let setDirection = function( newDirection )
+	let addDirection = function( newDirection )
 	{
-		direction = newDirection;
+		directions.push( newDirection );
+	}
+
+	let getFirstDirection = function()
+	{
+		let result = direction;
+		if( directions.length > 0 )
+		{
+			result = directions[0];
+		}
+		return result;
+	}
+
+	let getLastDirection = function()
+	{
+		let result = direction;
+		if( directions.length > 0 )
+		{
+			result = directions[ directions.length - 1 ];
+		}
+		return result;
+	}
+
+	let exceededMaxDirections = function()
+	{
+		return directions.length > 3;
 	}
 
 	let getDirection = function()
@@ -225,9 +254,11 @@ function Game( snake, board )
 	}
 
 	return {
+		exceededMaxDirections: exceededMaxDirections,
+		getLastDirection: getLastDirection,
 		getScore: getScore,
 		getDirection: getDirection,
-		setDirection: setDirection,
+		addDirection: addDirection,
 		gameOver: gameOver,
 		update: update
 	};
@@ -251,22 +282,38 @@ function initializeCells( columnCount )
 
 function listenForInput( game )
 {
+	let movingVertically = function() {
+		return !game.exceededMaxDirections() &&
+			   game.getLastDirection() !== DIRECTION.RIGHT &&
+	    	   game.getLastDirection() !== DIRECTION.LEFT;
+	};
+
+	let movingHorizontally = function() {
+		return !game.exceededMaxDirections() && 
+		   	   game.getLastDirection() !== DIRECTION.UP &&
+	    	   game.getLastDirection() !== DIRECTION.DOWN;
+	};
+
 	document.addEventListener('keydown', function( event ) {
-	    if(event.keyCode == 37 && game.getDirection() !== DIRECTION.RIGHT ) 
+		const LEFT_ARROW = 37;
+		const RIGHT_ARROW = 39;
+		const UP_ARROW = 38;
+		const DOWN_ARROW = 40;
+	    if( event.keyCode == LEFT_ARROW && movingVertically() ) 
 	    {
-	    	game.setDirection( DIRECTION.LEFT );
+	    	game.addDirection( DIRECTION.LEFT );
 	    }
-	    else if(event.keyCode == 39 && game.getDirection() !== DIRECTION.LEFT ) 
+	    else if( event.keyCode == RIGHT_ARROW && movingVertically() ) 
 	    {
-	    	game.setDirection( DIRECTION.RIGHT );
+	    	game.addDirection( DIRECTION.RIGHT );
 	    }
-	    else if(event.keyCode == 38 && game.getDirection() !== DIRECTION.DOWN )
+	    else if( event.keyCode == UP_ARROW && movingHorizontally() )
 	    {
-	    	game.setDirection( DIRECTION.UP );
+	    	game.addDirection( DIRECTION.UP );
 	    }
-	    else if(event.keyCode == 40 && game.getDirection() !== DIRECTION.UP )
+	    else if( event.keyCode == DOWN_ARROW && movingHorizontally() )
 	    {
-			game.setDirection( DIRECTION.DOWN );
+			game.addDirection( DIRECTION.DOWN );
 	    }
 	});
 }
@@ -283,7 +330,7 @@ let snake = Snake( board.cells[Math.floor(rowCount/2)][Math.floor(columnCount/2)
 let game = Game( snake, board );
 initializeCells( columnCount );
 board.placeFood();
-game.setDirection(DIRECTION.UP);
+game.addDirection(DIRECTION.UP);
 board.render();
 listenForInput( game );
 setInterval( function(){
