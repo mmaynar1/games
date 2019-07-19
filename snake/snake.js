@@ -116,13 +116,24 @@ function Board( rowCount, columnCount )
 	}
 
 	let placeFood = function() {
-		let row = getRandomInteger( 0, rowCount );
-		let column = getRandomInteger( 0, columnCount );
-		if( cells[row][column].cellType === CELL_TYPE.SNAKE )
+		let availableCells = getAvailableCells();
+		let cellIndex = getRandomInteger( 0, availableCells.length );
+		availableCells[cellIndex].cellType = CELL_TYPE.FOOD;
+	}
+
+	let getAvailableCells = function() {
+		let availableCells = [];
+		for( let row = 0; row < rowCount; row++ )
 		{
-			placeFood(); //todo don't do this. build up a list of possible ones, randomly select one, and remove duplicates as you go
+			for( let column = 0; column < columnCount; column++ )
+			{
+				if( cells[row][column].cellType === CELL_TYPE.EMPTY )
+				{
+					availableCells.push( cells[row][column] );
+				}
+			}
 		}
-		cells[row][column].cellType = CELL_TYPE.FOOD;
+		return availableCells;
 	}
 
 	let getColumnCount = function() {
@@ -339,7 +350,6 @@ function newGame()
 	let game = Game( snake, board );
 	initializeCells( columnCount );
 	board.placeFood();
-	//game.addDirection(DIRECTION.UP);
 	board.render();
 	listenForInput( game );
 	let interval = setInterval( function() { 
