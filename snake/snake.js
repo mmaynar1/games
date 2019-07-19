@@ -284,6 +284,8 @@ function initializeCells( columnCount )
 
 function listenForInput( game )
 {
+	let firstTime = true;
+
 	let movingVertically = function() {
 		return !game.exceededMaxDirections() &&
 			   game.getLastDirection() !== DIRECTION.RIGHT &&
@@ -298,26 +300,34 @@ function listenForInput( game )
 
 	let changeDirection = function( event )
 	{
-		const LEFT_ARROW = 37;
-		const RIGHT_ARROW = 39;
-		const UP_ARROW = 38;
-		const DOWN_ARROW = 40;
-	    if( event.keyCode == LEFT_ARROW && movingVertically() ) 
-	    {
-	    	game.addDirection( DIRECTION.LEFT );
-	    }
-	    else if( event.keyCode == RIGHT_ARROW && movingVertically() ) 
-	    {
-	    	game.addDirection( DIRECTION.RIGHT );
-	    }
-	    else if( event.keyCode == UP_ARROW && movingHorizontally() )
-	    {
-	    	game.addDirection( DIRECTION.UP );
-	    }
-	    else if( event.keyCode == DOWN_ARROW && movingHorizontally() )
-	    {
-			game.addDirection( DIRECTION.DOWN );
-	    }
+		if( firstTime )
+		{
+			game.addDirection( DIRECTION.UP );
+			firstTime = false;
+		}
+		else
+		{
+			const LEFT_ARROW = 37;
+			const RIGHT_ARROW = 39;
+			const UP_ARROW = 38;
+			const DOWN_ARROW = 40;
+		    if( event.keyCode == LEFT_ARROW && movingVertically() ) 
+		    {
+		    	game.addDirection( DIRECTION.LEFT );
+		    }
+		    else if( event.keyCode == RIGHT_ARROW && movingVertically() ) 
+		    {
+		    	game.addDirection( DIRECTION.RIGHT );
+		    }
+		    else if( event.keyCode == UP_ARROW && movingHorizontally() )
+		    {
+		    	game.addDirection( DIRECTION.UP );
+		    }
+		    else if( event.keyCode == DOWN_ARROW && movingHorizontally() )
+		    {
+				game.addDirection( DIRECTION.DOWN );
+		    }
+		}
 	};
 
 	document.onkeydown = null;
