@@ -339,7 +339,7 @@ function newGame()
 	let game = Game( snake, board );
 	initializeCells( columnCount );
 	board.placeFood();
-	game.addDirection(DIRECTION.UP);
+	//game.addDirection(DIRECTION.UP);
 	board.render();
 	listenForInput( game );
 	let interval = setInterval( function() { 
