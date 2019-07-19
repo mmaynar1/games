@@ -69,7 +69,6 @@ function Snake( cell, startingLength, board )
 
 	return {
 		getHead: getHead,
-		snakeParts: snakeParts,
 		grow: grow,
 		move: move,
 		checkCrash: checkCrash
@@ -226,11 +225,6 @@ function Game( snake, board )
 		return nextCell;
 	};
 
-	let getScore = function()
-	{
-		return score;
-	}
-
 	let addDirection = function( newDirection )
 	{
 		directions.push( newDirection );
@@ -261,18 +255,10 @@ function Game( snake, board )
 		return directions.length > 3;
 	}
 
-	let getDirection = function()
-	{
-		return direction;
-	}
-
 	return {
 		exceededMaxDirections: exceededMaxDirections,
 		getLastDirection: getLastDirection,
-		getScore: getScore,
-		getDirection: getDirection,
 		addDirection: addDirection,
-		gameOver: gameOver,
 		update: update
 	};
 }
@@ -355,11 +341,11 @@ function newGame()
 	let interval = setInterval( function() { 
 	game.update( snake, board );
 	board.render();
-	}, 120)
+	}, 100)
 	return interval;
 }
 
-let modal = document.getElementById("myModal");
+let modal = document.getElementById("modal");
 let closeModalButton = document.getElementsByClassName("close")[0];
 closeModalButton.onclick = function() {
   modal.style.display = "none";

@@ -7,7 +7,7 @@ main {
   margin: auto;
 }
 
-h1 {
+h1, h5 {
   text-align: center;
   color: rgb(255, 255, 153);
 }
@@ -28,7 +28,7 @@ h1 {
     width: 25px;
     height: 25px;
     background-color: grey;
-    border: 1px solid black;
+    border: 1px solid grey;
     font-size:50px;
     text-align:center;
     display: table-cell;
@@ -41,7 +41,7 @@ h1 {
 }
 
 .food {
-  background-color: red;
+  background-color: rgb(102, 178, 255);
 }
 
 /* Buttons */
