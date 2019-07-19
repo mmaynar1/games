@@ -177,7 +177,8 @@ function Game( snake, board )
 					direction = DIRECTION.NONE;
 					gameOver = true;
 					modal.style.display = "block";
-					document.getElementById("message").innerHTML = "Game Over! You scored " + score + "  points!";
+					let message = "Game Over! You scored " + score + "  points!";
+					document.getElementById("message").innerHTML = message;
 				}
 				else
 				{
@@ -331,8 +332,8 @@ function newGame()
 
 	let board = Board( rowCount, columnCount );
 	let snake = Snake( board.cells[Math.floor(rowCount/2)][Math.floor(columnCount/2)],
-				   startingLength, 
-				   board );
+				       startingLength, 
+				       board );
 	let game = Game( snake, board );
 	initializeCells( columnCount );
 	board.placeFood();
