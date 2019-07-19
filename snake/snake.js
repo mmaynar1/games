@@ -331,7 +331,9 @@ function newGame()
 	const startingLength = 5;
 
 	let board = Board( rowCount, columnCount );
-	let snake = Snake( board.cells[Math.floor(rowCount/2)][Math.floor(columnCount/2)],
+	let rowIndex = Math.floor(rowCount/2);
+	let columnIndex = Math.floor(columnCount/2);
+	let snake = Snake( board.cells[rowIndex][columnIndex],
 				       startingLength, 
 				       board );
 	let game = Game( snake, board );
