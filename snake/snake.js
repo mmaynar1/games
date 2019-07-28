@@ -165,30 +165,27 @@ function Game( snake, board )
 	let score = 0;
 
 	let update = function( snake, board ) {
-		if( !gameOver )
+		if( !gameOver && getFirstDirection() !== DIRECTION.NONE )
 		{
-			if( getFirstDirection() !== DIRECTION.NONE )
-			{
-				let nextCell = getNextCell( snake.getHead(), board );
+			let nextCell = getNextCell( snake.getHead(), board );
 
-				if( snake.checkCrash( nextCell ) ) 
+			if( snake.checkCrash( nextCell ) ) 
+			{
+				directions = [];
+				direction = DIRECTION.NONE;
+				gameOver = true;
+				modal.style.display = "block";
+				let message = "Game Over! You scored " + score + "  points!";
+				document.getElementById("message").innerHTML = message;
+			}
+			else
+			{
+				let nextCellType = snake.move( nextCell );
+				if( nextCellType == CELL_TYPE.FOOD )
 				{
-					directions = [];
-					direction = DIRECTION.NONE;
-					gameOver = true;
-					modal.style.display = "block";
-					let message = "Game Over! You scored " + score + "  points!";
-					document.getElementById("message").innerHTML = message;
-				}
-				else
-				{
-					let nextCellType = snake.move( nextCell );
-					if( nextCellType == CELL_TYPE.FOOD )
-					{
-						score += 100;
-						snake.grow();
-						board.placeFood();
-					}
+					score += 100;
+					snake.grow();
+					board.placeFood();
 				}
 			}
 		}
