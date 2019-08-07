@@ -1,0 +1,62 @@
+body {
+  background: rgb(102, 178, 255);
+}
+
+main {
+  max-width: 610px;
+  margin: auto;
+}
+
+h1, h5 {
+  text-align: center;
+  color: rgb(255, 255, 153);
+}
+
+#word {
+  letter-spacing: 10px;
+  text-align: center;
+  font-size: 20pt;
+  color: rgb(255, 255, 153);
+  font-weight: bold;
+  font-family: "Courier New", Courier, monospace
+}
+
+#guesses {
+  text-align: center;
+  font-size: 16pt;
+  color: rgb(255, 255, 153);
+  font-weight: bold;
+  font-family: "Courier New", Courier, monospace
+}
+
+.guess {
+  padding: 15px;
+  display: inline-block;
+  border: 2px solid rgb(255, 255, 153);
+  border-radius: 10px;
+  margin: 5px;
+}
+
+/* Buttons */
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #666;
+  background-color: rgb(255, 255, 153);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: rgb(224, 224, 139)}
+
+.button:active {
+  background-color: rgb(224, 224, 139);
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
