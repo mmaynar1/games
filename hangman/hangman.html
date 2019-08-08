@@ -9,8 +9,19 @@
     <main>
       <h1>Movie Hangman</h1>
       <h5><a href="https://mitchum.blog/how-to-build-hangman-with-javascript/">Back To Blog</a></h5>
-      <div id="gallows"></div>
+      <div id="gallows">
+        <img style="padding-left: 70px" id="hangmanImage" src="img/hangman0.png">
+      </div>
       <div id="word"></div>
+      <br>
+      <div id="controls">
+        <input type="text" id="guessBox">
+        <button class="button" onclick="guessWord( game )">Guess Word</button>
+        <button class="button">Play Again</button>
+        <br>
+        <br>
+        <button class="button">Please Stop Making Light Of Capital Punishment</button>
+      </div>
       <br>
       <div id="guesses"></div>
     </main>   

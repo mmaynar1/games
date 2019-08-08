@@ -6,12 +6,26 @@ function Game()
 	let maskedWord = "";
 	let incorrectGuesses = 0;
 	let possibleGuesses = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	let won = false;
+	let lost = false;
+	const maxGuesses = 7;
 
 	for ( let i = 0; i < word.length; i++ ) 
 	{
 		let space = " ";
 		let nextCharacter = word.charAt(i) === space ? space : "_";
 		maskedWord += nextCharacter;
+	}
+
+	let guessWord = function( guessedWord )
+	{
+		guessedWord = guessedWord.toUpperCase();
+		won = guessedWord === word;
+		if( !won )
+		{
+			incorrectGuesses++;
+			lost = incorrectGuesses >= maxGuesses;
+		}
 	}
 
 	let guess = function( letter ) 
@@ -34,33 +48,27 @@ function Game()
 
 				matchingIndexes.forEach( function(index) {
 					maskedWord = replace( maskedWord, index, letter );
-				});				
+				});	
+
+				won = maskedWord === word;			
 			}
 			else
 			{
 				incorrectGuesses++;
+				lost = incorrectGuesses >= maxGuesses;
 			}
 		}
 	}
 
-	let getWord = function() {
-		return word;
-	}
-
-	let getMaskedWord = function() {
-		return maskedWord;
-	}
-
-	let getPossibleGuesses = function() {
-		return [... possibleGuesses];
-	}
-
-
 	return {
-		"getWord": getWord,
-		"getMaskedWord": getMaskedWord,
+		"getWord": function(){ return word; },
+		"getMaskedWord": function(){ return maskedWord; },
 		"guess": guess,
-		"getPossibleGuesses": getPossibleGuesses
+		"getPossibleGuesses": function(){ return [... possibleGuesses]; },
+		"getIncorrectGuesses": function(){ return incorrectGuesses; },
+		"guessWord": guessWord,
+		"isWon": function(){ return won; },
+		"isLost": function(){ return lost; },
 	};
 }
 
@@ -75,13 +83,13 @@ function listenForInput( game )
 	{
 		if( letter )
 		{
-			game.guess( letter );
-	    	document.getElementById("word").innerHTML = game.getMaskedWord() 
-	    	document.getElementById("guesses").innerHTML = "";
-	    	game.getPossibleGuesses().forEach( function(guess) {
-	    		let innerHtml = "<span class='guess'>" + guess + "</span>";
-	    		document.getElementById("guesses").innerHTML += innerHtml;
-	    	});
+			let gameStillGoing = !game.isWon() && 
+								 !game.isLost();
+			if( gameStillGoing )
+			{
+				game.guess( letter );
+				render( game );
+			}
 		}
 	};
 
@@ -98,7 +106,8 @@ function listenForInput( game )
 		let letter = null;
 		const A = 65;
 		const Z = 90;
-		if( event.keyCode >= A && event.keyCode <= Z )
+		let isLetter = event.keyCode >= A && event.keyCode <= Z;
+		if( event.target.id !== "guessBox" && isLetter )
 		{
 			letter = String.fromCharCode( event.keyCode );
 		}
@@ -110,6 +119,37 @@ function listenForInput( game )
 	document.body.addEventListener('click', handleClick, false );
 }
 
+function guessWord( game )
+{
+	let gameStillGoing = !game.isWon() && 
+						 !game.isLost();
+	let guessedWord = document.getElementById('guessBox').value;
+	if( gameStillGoing )
+	{
+		game.guessWord( guessedWord );
+		render( game );
+	}
+}
+
+function render( game )
+{
+    document.getElementById("word").innerHTML = game.getMaskedWord(); 
+	document.getElementById("guesses").innerHTML = "";
+	game.getPossibleGuesses().forEach( function(guess) {
+		let innerHtml = "<span class='guess'>" + guess + "</span>";
+		document.getElementById("guesses").innerHTML += innerHtml;
+	});
+	document.getElementById("hangmanImage").src = "img/hangman" + game.getIncorrectGuesses() + ".png";
+	if( game.isWon() )
+	{
+		alert("won");
+	}
+	else if( game.isLost() )
+	{
+		alert("lost");
+	}
+}
+
 let game = Game();
-document.getElementById("word").innerHTML = game.getMaskedWord() 
-listenForInput(game);
+render( game )
+listenForInput( game );

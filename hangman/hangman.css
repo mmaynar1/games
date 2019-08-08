@@ -15,7 +15,7 @@ h1, h5 {
 #word {
   letter-spacing: 10px;
   text-align: center;
-  font-size: 20pt;
+  font-size: 24pt;
   color: rgb(255, 255, 153);
   font-weight: bold;
   font-family: "Courier New", Courier, monospace
@@ -30,11 +30,17 @@ h1, h5 {
 }
 
 .guess {
-  padding: 15px;
+  padding: 10px;
   display: inline-block;
   border: 2px solid rgb(255, 255, 153);
   border-radius: 10px;
   margin: 5px;
+}
+
+#guessBox {
+    height: 60px;
+    border-radius: 10px;
+    padding-top: 5px;
 }
 
 /* Buttons */
