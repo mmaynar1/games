@@ -140,13 +140,15 @@ function render( game )
 		document.getElementById("guesses").innerHTML += innerHtml;
 	});
 	document.getElementById("hangmanImage").src = "img/hangman" + game.getIncorrectGuesses() + ".png";
+
+	let guessBox = document.getElementById('guessBox');
 	if( game.isWon() )
 	{
-		alert("won");
+		guessBox.value = "You Won!";
 	}
 	else if( game.isLost() )
 	{
-		alert("lost");
+		guessBox.value = "You Lost!";
 	}
 }
 

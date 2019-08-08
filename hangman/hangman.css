@@ -41,6 +41,8 @@ h1, h5 {
     height: 60px;
     border-radius: 10px;
     padding-top: 5px;
+    font-size: 18pt;
+    width: 200px;
 }
 
 /* Buttons */
