@@ -114,9 +114,8 @@ function listenForInput( game )
 		guessLetter( letter );
 	}
 
-	document.onkeydown = null;
 	document.addEventListener('keydown', handleKeyPress );
-	document.body.addEventListener('click', handleClick, false );
+	document.body.addEventListener('click', handleClick );
 }
 
 function guessWord( game )
@@ -145,13 +144,26 @@ function render( game )
 	if( game.isWon() )
 	{
 		guessBox.value = "You Won!";
+		guessBox.classList = "win";
 	}
 	else if( game.isLost() )
 	{
 		guessBox.value = "You Lost!";
+		guessBox.classList = "loss";
+	}
+	else
+	{
+		guessBox.value = "";
+		guessBox.classList = "";
 	}
 }
 
-let game = Game();
-render( game )
+function newGame()
+{
+	history.go(0)
+}
+
+let game = new Game();
+render( game );
 listenForInput( game );
+

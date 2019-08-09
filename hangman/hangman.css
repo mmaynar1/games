@@ -12,6 +12,16 @@ h1, h5 {
   color: rgb(255, 255, 153);
 }
 
+.win {
+  color: white;
+  background-color: green;
+}
+
+.loss {
+  color: white;
+  background-color: red;
+}
+
 #word {
   letter-spacing: 10px;
   text-align: center;
@@ -43,6 +53,7 @@ h1, h5 {
     padding-top: 5px;
     font-size: 18pt;
     width: 200px;
+    padding-left: 10px;
 }
 
 /* Buttons */
