@@ -1,6 +1,131 @@
+/* Movies */
+let movies = [
+	'The Shawshank Redemption',
+	'School of Rock',
+	'Forrest Gump',
+	'Remember the Titans',
+	'Saving Private Ryan',
+	'The Dark Knight',
+	'The Godfather',
+	'Pulp Fiction',
+	'Inception',
+	'Fight Club',
+	'Goodfellas',
+	'Interstellar',
+	'Life Is Beautiful',
+	'American History X',
+	'Toy Story',
+	'Back to the Future',
+	'Raiders of the Lost Ark',
+	'Rear Window',
+	'Django Unchained',
+	'Once Upon a Time in the West',
+	'The Shining',
+	'Inglourious Basterds',
+	'Good Will Hunting',
+	'Reservoir Dogs',
+	'For a Few Dollars More',
+	'To Kill a Mockingbird',
+	'Citizen Kane',
+	'The Sound of Music',
+	'Inside Out',
+	'Up',
+	'The Wolf of Wall Street',
+	'V for Vendetta',
+	'Batman Begins',
+	'A Beautiful Mind',
+	'Nacho Libre',
+	'Napoleon Dynamite',
+	'Indiana Jones and the Last Crusade',
+	'Die Hard',
+	'The Hangover',
+	'The Shack',
+	'The Great Escape',
+	'A Quiet Place',
+	'Billy Madison',
+	'Happy Gilmore',
+	'Tommy Boy',
+	'The Bridge on the River Kwai',
+	'Gone with the Wind',
+	'Logan',
+	'Hacksaw Ridge',
+	'Gone Girl',
+	'Guardians of the Galaxy',
+	'Gran Torino',
+	'Shutter Island',
+	'How to Train Your Dragon',
+	'Hotel Rwanda',
+	'Finding Nemo',
+	'The Sixth Sense',
+	'The Truman Show',
+	'Fargo',
+	'Jurassic Park',
+	'Dead Poets Society',
+	'Stand And Deliver',
+	'Stand by Me',
+	'The Sandlot',
+	'Rocky',
+	'Pale Rider',
+	'Groundhog Day',
+	'The Room',
+	'Mean Girls',
+	'The Boondock Saints',
+	'Black Hawk Down',
+	'Dunkirk',
+	'Lone Survivor',
+	'Letters from Iwo Jima',
+	'Flags of Our Fathers',
+	'Apocalypse Now',
+	'Full Metal Jacket',
+	'The Notebook',
+	'Pride and Prejudice',
+	'Pearl Harbor',
+	'The Dirty Dozen',
+	'We Were Soldiers',
+	'A Walk to Remember',
+	'Silver Linings Playbook',
+	'The Holiday',
+	'Hitch',
+	'Pretty Woman',
+	'Clueless',
+	'Sleepless in Seattle',
+	'The Wedding Singer',
+	'Sweet Home Alabama',
+	'What Women Want',
+	'Jerry Maguire',
+	'Hidden Figures',
+	'The Social Network',
+	'Lincoln',
+	'The Green Mile',
+	'Titanic',
+	'Cast Away',
+	'Big',
+	'Sully',
+	'Captain Phillips',
+	'Catch Me If You Can',
+	'The Polar Express',
+	'How the Grinch Stole Christmas',
+	'Yes Man',
+	'The Cable Guy',
+	'Dumb and Dumber',
+	'Liar Liar',
+	'The Mask',
+	'Bruce Almighty',
+	'Black Panther',
+	'Captain Marvel',
+	'Venom',
+	'Deadpool',
+	'The Avengers',
+	'Iron Man',
+	'Thor',
+	'The Incredibles',
+	'Robin Hood'
+];
+
+/* Game */
 function Game()
 {
-	let word = "The Shawshank Redemption"; //todo get a random one
+	let word = movies[Math.floor(Math.random()*movies.length)];
 	word = word.toUpperCase();
 	let guessedLetters = [];
 	let maskedWord = "";
@@ -20,11 +145,21 @@ function Game()
 	let guessWord = function( guessedWord )
 	{
 		guessedWord = guessedWord.toUpperCase();
-		won = guessedWord === word;
-		if( !won )
+		if( guessedWord === word )
 		{
-			incorrectGuesses++;
-			lost = incorrectGuesses >= maxGuesses;
+			guessAllLetters();
+		}
+		else
+		{
+			handleIncorrectGuess();
+		}
+	}
+
+	let guessAllLetters = function()
+	{
+		for ( let i = 0; i < word.length; i++ ) 
+		{
+			guess( word.charAt( i ) );
 		}
 	}
 
@@ -50,13 +185,25 @@ function Game()
 					maskedWord = replace( maskedWord, index, letter );
 				});	
 
-				won = maskedWord === word;			
+				if( !lost )
+				{
+					won = maskedWord === word;	
+				}		
 			}
 			else
 			{
-				incorrectGuesses++;
-				lost = incorrectGuesses >= maxGuesses;
+				handleIncorrectGuess();
 			}
+		}
+	}
+
+	let handleIncorrectGuess = function()
+	{
+		incorrectGuesses++;
+		lost = incorrectGuesses >= maxGuesses;
+		if( lost )
+		{
+			guessAllLetters();
 		}
 	}
 
@@ -106,10 +253,18 @@ function listenForInput( game )
 		let letter = null;
 		const A = 65;
 		const Z = 90;
+		const ENTER = 13;
 		let isLetter = event.keyCode >= A && event.keyCode <= Z;
+		let guessWordButton = document.getElementById("guessWordButton");
+		let guessBox = document.getElementById("guessBox");
+
 		if( event.target.id !== "guessBox" && isLetter )
 		{
 			letter = String.fromCharCode( event.keyCode );
+		}
+		else if( event.keyCode === ENTER && guessBox.value !== "" )
+		{
+			guessWordButton.click();
 		}
 		guessLetter( letter );
 	}
@@ -166,4 +321,3 @@ function newGame()
 let game = new Game();
 render( game );
 listenForInput( game );
-
