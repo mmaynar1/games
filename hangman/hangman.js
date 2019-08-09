@@ -119,10 +119,75 @@ let movies = [
 	'Iron Man',
 	'Thor',
 	'The Incredibles',
-	'Robin Hood'
+	'Robin Hood',
+	'Bee Movie',
+	'Aladdin',
+	'The Wizard of Oz',
+	'It',
+	'Bohemian Rhapsody',
+	'The Hateful Eight',
+	'Top Gun',
+	'Suicide Squad',
+	'Zombieland',
+	'Jackie Brown',
+	'The English Patient',
+	'No Country for Old Men',
+	'Reign Over Me',
+	'Gladiator',
+	'Chariots of Fire',
+	'Slumdog Millionaire',
+	'Lawrence of Arabia',
+	'Patton',
+	'Green Book',
+	'Psycho',
+	'Vertigo',
+	'Taken',
+	'Cold Pursuit',
+	'The Grey',
+	'Gangs of New York',
+	'The Lego Movie',
+	'War Room',
+	'Silence',
+	'Fireproof',
+	'The Passion of the Christ',
+	'Facing the Giants',
+	'The Prince of Egypt',
+	'Joshua',
+	'Get Out',
+	'Seven',
+	'The Sixth Sense',
+	'The Prestige',
+	'Jaws',
+	'Basic Instinct',
+	'Unbreakable',
+	'Glass',
+	'Split',
+	'Scream',
+	'The Fugitive',
+	'The Conjuring',
+	'Sinister',
+	'Insidious',
+	'The Blair Witch Project',
+	'The Grudge',
+	'Blazing Saddles',
+	'Superbad',
+	'Hot Fuzz',
+	'Tropic Thunder',
+	'Old School',
+	'Office Space',
+	'Caddyshack',
+	'Stripes',
+	'Animal House',
+	'The Jerk',
+	'Raising Arizona',
+	'Paid in Full'
 ];
 
 /* Game */
+
+const youWon = "You Won!";
+const youLost = "You Lost!";
+
 function Game()
 {
 	let word = movies[Math.floor(Math.random()*movies.length)];
@@ -256,11 +321,17 @@ function listenForInput( game )
 		const ENTER = 13;
 		let isLetter = event.keyCode >= A && event.keyCode <= Z;
 		let guessWordButton = document.getElementById("guessWordButton");
+		let newGameButton = document.getElementById("newGameButton");
 		let guessBox = document.getElementById("guessBox");
+		let gameOver = guessBox.value === youWon || guessBox.value === youLost;
 
 		if( event.target.id !== "guessBox" && isLetter )
 		{
 			letter = String.fromCharCode( event.keyCode );
+		}
+		else if( event.keyCode === ENTER && gameOver )
+		{
+			newGameButton.click();
 		}
 		else if( event.keyCode === ENTER && guessBox.value !== "" )
 		{
@@ -298,12 +369,12 @@ function render( game )
 	let guessBox = document.getElementById('guessBox');
 	if( game.isWon() )
 	{
-		guessBox.value = "You Won!";
+		guessBox.value = youWon;
 		guessBox.classList = "win";
 	}
 	else if( game.isLost() )
 	{
-		guessBox.value = "You Lost!";
+		guessBox.value = youLost;
 		guessBox.classList = "loss";
 	}
 	else
