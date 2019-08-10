@@ -48,6 +48,25 @@ h1, h5 {
   cursor: pointer;
 }
 
+@media only screen and (max-width: 600px) {
+    #guesses {
+    text-align: center;
+    font-size: 24pt;
+    color: rgb(255, 255, 153);
+    font-weight: bold;
+    font-family: "Courier New", Courier, monospace
+  }
+
+  .guess {
+    padding: 30px;
+    display: inline-block;
+    border: 2px solid rgb(255, 255, 153);
+    border-radius: 10px;
+    margin: 10px;
+    cursor: pointer;
+  }
+}
+
 #guessBox {
     height: 60px;
     border-radius: 10px;
