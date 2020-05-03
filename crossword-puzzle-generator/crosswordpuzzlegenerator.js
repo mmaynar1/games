@@ -1,5 +1,5 @@
-const attemptsToFitWords = 100;
-const gridsToMake = 2;
+const attemptsToFitWords = 300;
+const gridsToMake = 50;
 const gridSize = 20;
 const SPACE = " ";
 
@@ -46,6 +46,20 @@ let createCrossWordPuzzle = function()
         return word;
     }
 
+    let getBestGrid = function( grids )
+    {
+        let bestGrid = grids[ 0 ];
+        grids.forEach(grid => function()
+        	{
+        		if ( grid.getIntersections() >= bestGrid.getIntersections() && grid.getLetterCount() > bestGrid.getLetterCount() )
+            	{
+               		bestGrid = grid;
+            	}
+        	});
+
+        return bestGrid;
+    }
+
 	for ( let gridsMade = 0; gridsMade < gridsToMake; gridsMade++ ) 
 	{
 		let grid = new CrosswordPuzzle();
@@ -62,10 +76,11 @@ let createCrossWordPuzzle = function()
         }
 
         generatedGrids.push( grid );
+        usedWords = [];
 	}
 
-	//put a breakpoint on this line to check out what's been going on
-	let safasdf = 23;
+	let bestGrid = getBestGrid( generatedGrids );
+	console.log(bestGrid.grid);
 }
 
 function CrosswordPuzzle()
@@ -123,6 +138,48 @@ function CrosswordPuzzle()
 
 		return canBePlaced;
 	}
+
+    let getLetterCount = function()
+    {
+        let letterCount = 0;
+        for (let row = 0; row < gridSize; row++)
+        {
+            for (let column = 0; column < gridSize; column++)
+            {
+                if ( isLetter( row, column ) )
+                {
+                    ++letterCount;
+                }
+            }
+        }
+        return letterCount;
+    }
+
+    let getIntersections = function()
+    {
+        let intersections = 0;
+        for (let row = 0; row < gridSize; row++)
+        {
+            for (let column = 0; column < gridSize; column++)
+            {
+                if ( isLetter( row, column ) )
+                {
+                    if ( isValidPosition( row - 1, column ) &&
+                         isValidPosition( row + 1, column ) &&
+                         isValidPosition( row, column - 1 ) &&
+                         isValidPosition( row, column + 1 ) &&
+                         isLetter( row - 1, column ) &&
+                         isLetter( row + 1, column ) &&
+                         isLetter( row, column - 1 ) &&
+                         isLetter( row, column + 1 ) )
+                    {
+                        ++intersections;
+                    }
+                }
+            }
+        }
+        return intersections;
+    }
 
 	let placementLegal = function( word, row, column )
 	{
