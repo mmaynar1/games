@@ -68,7 +68,7 @@ let createCrossWordPuzzle = function()
 		//alert(startingWord.text);
 		//let word = new Word( 'starting', 0, 0, false );
 		grid.update(word);
-		usedWords.push(word);
+		usedWords.push(word.text);
 
         for (let attempts = 0; attempts < attemptsToFitWords; ++attempts)
         {
@@ -340,7 +340,8 @@ function getRandomWordOfSize( wordList, wordSize )
 
 function getRandomWord( wordList )
 {
-	return wordList[getRandomInt(wordList.length)]
+	let words = getUnusedWords();
+	return words[getRandomInt(words.length)]
 }
 
 function getRandomInt( max )

@@ -147,5 +147,11 @@ let words = [
 	'paid',
 	'ball',
 	'basketball',
-	'pardon'
+	'pardon',
+	'elimination',
+	'conservative',
+	'economics',
+	'global',
+	'rotund',
+	'examination'
 ];
