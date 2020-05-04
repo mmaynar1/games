@@ -1,5 +1,5 @@
-const attemptsToFitWords = 300;
-const gridsToMake = 50;
+const attemptsToFitWords = 350;
+const gridsToMake = 25;
 const gridSize = 20;
 const SPACE = " ";
 
@@ -77,6 +77,7 @@ let createCrossWordPuzzle = function()
         return bestGrid;
     }
 
+    generatedGrids = [];
 
 	for ( let gridsMade = 0; gridsMade < gridsToMake; gridsMade++ ) 
 	{
@@ -98,7 +99,6 @@ let createCrossWordPuzzle = function()
 	}
 
 	let bestGrid = getBestGrid( generatedGrids );
-	console.log(bestGrid.grid);
     for (let row = 0; row < gridSize; ++row)
     {
         for (let column = 0; column < gridSize; ++column)
@@ -107,6 +107,10 @@ let createCrossWordPuzzle = function()
             if( bestGrid.isLetter(row, column))
             {
             	slot.innerHTML = bestGrid.grid[row][column];
+            }
+            else
+            {
+            	slot.innerHTML = "";
             }
         }
     }
