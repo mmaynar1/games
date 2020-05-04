@@ -11,3 +11,22 @@ h1, h5 {
   text-align: center;
   color: rgb(255, 255, 153);
 }
+
+.grid {
+    width: 540px;
+    height: 540px;
+    margin: 20px;
+    border: 25px solid #333;
+}
+
+.slot {
+    float: left;
+    width: 25px;
+    height: 25px;
+    background-color: #e9e9e9;
+    border: 1px solid black;
+    font-size:20px;
+    text-align:center;
+    display: table-cell;
+    vertical-align:middle;
+}

@@ -6,6 +6,23 @@ const SPACE = " ";
 let usedWords = [];
 let generatedGrids = [];
 
+let slots = gridSize * gridSize;
+let gridDiv = document.getElementById("grid");
+let row = 0;
+let column = 0;
+for( let slot = 0; slot < slots; slot++ )
+{
+	let div = document.createElement("DIV");
+	div.id = row + "_" + column; 
+	div.classList.add("slot");
+	gridDiv.appendChild(div);
+	column++;
+	if( column >= gridSize )
+	{
+		column = 0;
+		row++;
+	}
+}
 
 
 let createCrossWordPuzzle = function()
@@ -60,6 +77,7 @@ let createCrossWordPuzzle = function()
         return bestGrid;
     }
 
+
 	for ( let gridsMade = 0; gridsMade < gridsToMake; gridsMade++ ) 
 	{
 		let grid = new CrosswordPuzzle();
@@ -81,6 +99,17 @@ let createCrossWordPuzzle = function()
 
 	let bestGrid = getBestGrid( generatedGrids );
 	console.log(bestGrid.grid);
+    for (let row = 0; row < gridSize; ++row)
+    {
+        for (let column = 0; column < gridSize; ++column)
+        {
+            let slot = document.getElementById(row + "_" + column);
+            if( bestGrid.isLetter(row, column))
+            {
+            	slot.innerHTML = bestGrid.grid[row][column];
+            }
+        }
+    }
 }
 
 function CrosswordPuzzle()
