@@ -1,5 +1,5 @@
-const attemptsToFitWords = 350;
-const gridsToMake = 25;
+const attemptsToFitWords = 300;
+const gridsToMake = 30;
 const gridSize = 20;
 
 let usedWords = [];
@@ -76,43 +76,55 @@ let createCrossWordPuzzle = function()
         return bestGrid;
     }
 
-    generatedGrids = [];
-
-	for ( let gridsMade = 0; gridsMade < gridsToMake; gridsMade++ ) 
-	{
-		let grid = new CrosswordPuzzle();
-		let word = new Word( getRandomWordOfSize( getUnusedWords(), 9 ),
-									 0, 0, false );
-		//alert(startingWord.text);
-		//let word = new Word( 'starting', 0, 0, false );
-		grid.update(word);
-		usedWords.push(word.text);
-
-        for (let attempts = 0; attempts < attemptsToFitWords; ++attempts)
-        {
-            attemptToPlaceWordOnGrid( grid, word );
-        }
-
-        generatedGrids.push( grid );
-        usedWords = [];
-	}
-
-	let bestGrid = getBestGrid( generatedGrids );
-    for (let row = 0; row < gridSize; ++row)
+    let generateGrids = function()
     {
-        for (let column = 0; column < gridSize; ++column)
+        generatedGrids = [];
+
+        for ( let gridsMade = 0; gridsMade < gridsToMake; gridsMade++ ) 
         {
-            let slot = document.getElementById(row + "_" + column);
-            if( bestGrid.isLetter(row, column))
+            let grid = new CrosswordPuzzle();
+            let word = new Word( getRandomWordOfSize( getUnusedWords(), 9 ),
+                                         0, 0, false );
+            grid.update(word);
+            usedWords.push(word.text);
+
+            for (let attempts = 0; attempts < attemptsToFitWords; ++attempts)
             {
-            	slot.innerHTML = bestGrid.grid[row][column];
+                attemptToPlaceWordOnGrid( grid, word );
             }
-            else
+
+            generatedGrids.push( grid );
+            usedWords = [];
+        }
+    }
+    
+    let displayCrosswordPuzzle = function( bestGrid )
+    {      
+        for (let row = 0; row < gridSize; ++row)
+        {
+            for (let column = 0; column < gridSize; ++column)
             {
-            	slot.innerHTML = "";
+                let slot = document.getElementById(row + "_" + column);
+                if( bestGrid.isLetter(row, column))
+                {
+                    slot.innerHTML = bestGrid.grid[row][column];
+                    slot.style.borderBottom =  '1px solid #9a8e9a';
+                    slot.style.borderRight =  '1px solid #9a8e9a';
+                    slot.style.backgroundColor = 'rgb(102, 178, 255)'; 
+                }
+                else
+                {
+                    slot.innerHTML = "";
+                    slot.style.border =  '1px solid #e9e9e9';
+                    slot.style.backgroundColor = '#e9e9e9';
+                }
             }
         }
     }
+
+    generateGrids();
+	let bestGrid = getBestGrid( generatedGrids );
+    displayCrosswordPuzzle( bestGrid );
 }
 
 function getUnusedWords()
