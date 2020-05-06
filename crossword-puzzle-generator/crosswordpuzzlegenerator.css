@@ -7,9 +7,10 @@ main {
   margin: auto;
 }
 
-h1, h5, #startButton {
+h3, h5, #startButton {
   text-align: center;
   color: rgb(255, 255, 153);
+  margin: 5px;
 }
 
 .grid {
@@ -35,7 +36,7 @@ h1, h5, #startButton {
 .button {
   display: inline-block;
   padding: 15px 25px;
-  font-size: 24px;
+  font-size: 16px;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
