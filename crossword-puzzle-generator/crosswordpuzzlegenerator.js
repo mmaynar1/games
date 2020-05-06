@@ -1,9 +1,10 @@
-const attemptsToFitWords = 300;
-const gridsToMake = 30;
+const attemptsToFitWords = 5000;
+const gridsToMake = 20;
 const gridSize = 20;
 
 let usedWords = [];
 let generatedGrids = [];
+let goodStartingLetters = new Set()
 
 let slots = gridSize * gridSize;
 let gridDiv = document.getElementById("grid");
@@ -27,7 +28,7 @@ let createCrossWordPuzzle = function()
 {
 	let attemptToPlaceWordOnGrid = function(grid, word)
 	{
-        let text = getUniqueRandomWord();
+        let text = getAWordToTry();
         for (let row = 0; row < gridSize; ++row)
         {
             for (let column = 0; column < gridSize; ++column)
@@ -41,22 +42,25 @@ let createCrossWordPuzzle = function()
                 {
                     if ( grid.update( word ) )
                     {
-                        usedWords.push( word.text );
-                        text = getUniqueRandomWord();
-                        word.text = text;
+                        pushUsedWords( word.text );
+                        return true;
                     }
                 }
             }
         }
+        return false;
+
 	}
 
-	let getUniqueRandomWord = function()
+	let getAWordToTry = function()
     {
         let word = getRandomWord( words );
+        let goodWord = isGoodWord( word );
 
-        while ( usedWords.includes( word ) )
+        while ( usedWords.includes( word ) || !goodWord )
         {
             word = getRandomWord( words );
+            goodWord = isGoodWord( word );
         }
         return word;
     }
@@ -64,16 +68,28 @@ let createCrossWordPuzzle = function()
     let getBestGrid = function( grids )
     {
         let bestGrid = grids[ 0 ];
-        grids.forEach(grid => function()
-        	{
-        		if ( grid.getIntersections() >= bestGrid.getIntersections() && 
-        			 grid.getLetterCount() > bestGrid.getLetterCount() )
-            	{
-               		bestGrid = grid;
-            	}
-        	});
-
+        for(let grid of grids) 
+        {
+            if ( grid.getIntersections() >= bestGrid.getIntersections() )
+            {
+                bestGrid = grid;
+            }
+        }
         return bestGrid;
+    }
+
+    let isGoodWord = function( word )
+    {
+        let goodWord = false;
+        for(let letter of goodStartingLetters) 
+        {
+            if( letter === word.charAt(0))
+            {
+                goodWord = true;
+                break;
+            }
+        }
+        return goodWord;
     }
 
     let generateGrids = function()
@@ -86,14 +102,31 @@ let createCrossWordPuzzle = function()
             let word = new Word( getRandomWordOfSize( getUnusedWords(), 9 ),
                                          0, 0, false );
             grid.update(word);
-            usedWords.push(word.text);
+            pushUsedWords(word.text);
 
+            let continuousFails = 0;
             for (let attempts = 0; attempts < attemptsToFitWords; ++attempts)
             {
-                attemptToPlaceWordOnGrid( grid, word );
+                let placed = attemptToPlaceWordOnGrid( grid, word );
+                if( placed )
+                {
+                    continuousFails = 0;
+                }
+                else
+                {
+                    continuousFails++;
+                }
+                if( continuousFails > 470 )
+                {
+                    break;
+                }
             }
 
             generatedGrids.push( grid );
+            if( grid.getIntersections() >= 4 )
+            {
+                break;
+            }
             usedWords = [];
         }
     }
@@ -120,6 +153,12 @@ let createCrossWordPuzzle = function()
                 }
             }
         }
+    }
+
+    let pushUsedWords = function( text )
+    {
+        usedWords.push( text );
+        text.split('').filter( char => goodStartingLetters.add(char));
     }
 
     generateGrids();

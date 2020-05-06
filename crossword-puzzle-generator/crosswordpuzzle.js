@@ -231,5 +231,10 @@ function CrosswordPuzzle()
         return row >= 0 && row < gridSize && column >= 0 && column < gridSize;
     }
 
-	return { "grid": grid, "update": update, "isLetter": isLetter };
+	return { 
+		"grid": grid, 
+		"update": update, 
+		"isLetter": isLetter, 
+		"getIntersections": getIntersections,
+		"getLetterCount": getLetterCount };
 }
