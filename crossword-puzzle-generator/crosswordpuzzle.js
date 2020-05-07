@@ -54,22 +54,6 @@ function CrosswordPuzzle()
 		return canBePlaced;
 	}
 
-    let getLetterCount = function()
-    {
-        let letterCount = 0;
-        for (let row = 0; row < gridSize; row++)
-        {
-            for (let column = 0; column < gridSize; column++)
-            {
-                if ( isLetter( row, column ) )
-                {
-                    ++letterCount;
-                }
-            }
-        }
-        return letterCount;
-    }
-
     let getIntersections = function()
     {
         let intersections = 0;
@@ -235,6 +219,6 @@ function CrosswordPuzzle()
 		"grid": grid, 
 		"update": update, 
 		"isLetter": isLetter, 
-		"getIntersections": getIntersections,
-		"getLetterCount": getLetterCount };
+		"getIntersections": getIntersections
+	};
 }
