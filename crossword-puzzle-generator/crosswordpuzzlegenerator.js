@@ -15,6 +15,8 @@ for( let slot = 0; slot < slots; slot++ )
 	let div = document.createElement("DIV");
 	div.id = row + "_" + column; 
 	div.classList.add("slot");
+    div.style.border =  '1px solid #e9e9e9';
+    div.style.backgroundColor = '#e9e9e9';
 	gridDiv.appendChild(div);
 	column++;
 	if( column >= gridSize )
@@ -187,5 +189,3 @@ function getRandomInt( max )
 {
 	return Math.floor(Math.random() * Math.floor(max));
 }
-
-createCrossWordPuzzle();
