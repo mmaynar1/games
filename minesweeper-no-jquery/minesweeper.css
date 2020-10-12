@@ -1,0 +1,86 @@
+body {
+  background: rgb(102, 178, 255);
+}
+
+main {
+  max-width: 610px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  color: rgb(255, 255, 153);
+}
+
+.user-display {
+  text-align: center;
+  color: rgb(255, 255, 153);
+  border: 2px solid rgb(255, 255, 153);
+  border-radius: 10px;
+  display: inline-block;
+  width: 15%;
+  margin-right: 5px; 
+}
+
+.instructions {
+  text-align: left;
+  padding-left: 5px; 
+  color: rgb(255, 255, 153);
+  border: 2px solid rgb(255, 255, 153);
+  border-radius: 10px;
+}
+
+.controls {
+  text-align: center;
+}
+
+#messageBox {
+  text-align: center;
+  color: rgb(255, 255, 153);
+  border: 2px solid rgb(255, 255, 153);
+  border-radius: 10px;
+}
+
+.board {
+    width: 520px;
+    height: 520px;
+    margin: 20px;
+    border: 25px solid #333;
+}
+
+.cell {
+    float: left;
+    width: 50px;
+    height: 50px;
+    background-image: radial-gradient(#fff,#e6e6e6);
+    border: 1px solid black;
+    font-size:50px;
+    text-align:center;
+    display: table-cell;
+    vertical-align:middle;
+    line-height: 50px;
+}
+
+/* Buttons */
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #666;
+  background-color: rgb(255, 255, 153);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: rgb(224, 224, 139)}
+
+.button:active {
+  background-color: rgb(224, 224, 139);
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
