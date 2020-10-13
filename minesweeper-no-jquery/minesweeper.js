@@ -335,14 +335,20 @@ let getRandomInteger = function( min, max )
 	return Math.floor( Math.random() * ( max - min ) ) + min;
 }
 
-var newGame = function( boardSize, mines )
+let newGame = function( boardSize, mines )
 {
-	$('#time').text("0");
-	$('#messageBox').text('Make a Move!')
-					.css({'color': 'rgb(255, 255, 153)', 
-						  'background-color': 'rgb(102, 178, 255)'});
+    let timeElement = document.getElementById("time");
+    timeElement.innerText = "0";
+
+    let messageBoxElement = document.getElementById("messageBox");
+    messageBoxElement.innerText = "Make a Move!";
+    messageBoxElement.style.color = "rgb(255, 255, 153)";
+    messageBoxElement.style.backgroundColor = "rgb(102, 178, 255)";
+
 	minesRemaining = mines;
-	$( '#mines-remaining').text( minesRemaining );
+	let minesRemainingElement = document.getElementById("mines-remaining");
+	minesRemainingElement.innerText = minesRemaining;
+
 	gameOver = false;
 	initializeCells( boardSize );
 	board = Board( boardSize, mines );
@@ -355,7 +361,7 @@ var newGame = function( boardSize, mines )
     {
     	timer = 999;
     }
-    $('#time').text(timer);
+    timeElement.innerText = timer;
 	}, 1000);
 
 	return board;
