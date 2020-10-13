@@ -319,10 +319,10 @@ let getNumberColor = function( number )
 	return color;
 }
 
-var isMined = function( board, id )
+let isMined = function( board, id )
 {	
-	var cell = board[id];
-	var mined = 0;
+	let cell = board[id];
+	let mined = 0;
 	if( typeof cell !== 'undefined' )
 	{
 		mined = cell.mined ? 1 : 0;
