@@ -57,7 +57,6 @@ let initializeCells = function( boardSize )
 
 let listenForClick = function(e)
 {
-   e.target.removeEventListener('click', listenForClick, false);
    handleClick( e.currentTarget.id );
    let isVictory = true;
    let cells = Object.keys(board);
@@ -87,7 +86,6 @@ let listenForClick = function(e)
 let listenForRightClick = function(e)
 {
     e.preventDefault();
-    e.target.removeEventListener('contextmenu', listenForRightClick, false);
     handleRightClick( e.currentTarget.id );
     return false;
 }
