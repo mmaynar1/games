@@ -297,9 +297,9 @@ let getNeighbors = function( id )
 	return neighbors
 }
 
-var getNumberColor = function( number )
+let getNumberColor = function( number )
 {
-	var color = 'black';        
+	let color = 'black';
 	if( number === 1 )
 	{
 		color = 'blue';
