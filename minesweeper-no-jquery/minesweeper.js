@@ -246,21 +246,21 @@ let randomlyAssignMines = function( board, mineCount )
 	return board;
 }
 
-var calculateNeighborMineCounts = function( board, boardSize )
+let calculateNeighborMineCounts = function( board, boardSize )
 {
-	var cell;
-	var neighborMineCount = 0;
-	for( var row = 0; row < boardSize; row++ )
+	let cell;
+	let neighborMineCount = 0;
+	for( let row = 0; row < boardSize; row++ )
 	{
-		for( var column = 0; column < boardSize; column++ )
+		for( let column = 0; column < boardSize; column++ )
 		{
-			var id = row + "" + column;
+			let id = row + "" + column;
 			cell = board[id];
 			if( !cell.mined )
 			{
-				var neighbors = getNeighbors( id );
+				let neighbors = getNeighbors( id );
 				neighborMineCount = 0;
-				for( var i = 0; i < neighbors.length; i++ )
+				for( let i = 0; i < neighbors.length; i++ )
 				{
 					neighborMineCount += isMined( board, neighbors[i] );
 				}
