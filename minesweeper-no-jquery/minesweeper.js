@@ -226,21 +226,21 @@ let loss = function()
 	clearInterval(timeout);
 }
 
-var randomlyAssignMines = function( board, mineCount )
+let randomlyAssignMines = function( board, mineCount )
 {
-	var mineCooridinates = [];
-	for( var i = 0; i < mineCount; i++ )
+	let mineCoordinates = [];
+	for( let i = 0; i < mineCount; i++ )
 	{
-		var randomRowCoordinate = getRandomInteger( 0, boardSize );
-		var randomColumnCoordinate = getRandomInteger( 0, boardSize );
-		var cell = randomRowCoordinate + "" + randomColumnCoordinate;
-		while( mineCooridinates.includes( cell ) )
+		let randomRowCoordinate = getRandomInteger( 0, boardSize );
+		let randomColumnCoordinate = getRandomInteger( 0, boardSize );
+		let cell = randomRowCoordinate + "" + randomColumnCoordinate;
+		while( mineCoordinates.includes( cell ) )
 		{
 			randomRowCoordinate = getRandomInteger( 0, boardSize );
 			randomColumnCoordinate = getRandomInteger( 0, boardSize );
 			cell = randomRowCoordinate + "" + randomColumnCoordinate;
 		}
-		mineCooridinates.push( cell );
+		mineCoordinates.push( cell );
 		board[cell].mined = true;
 	}
 	return board;
