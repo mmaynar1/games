@@ -206,19 +206,21 @@ let handleRightClick = function( id )
 	}
 }
 
-var loss = function()
+let loss = function()
 {
 	gameOver = true;
-	$('#messageBox').text('Game Over!')
-					.css({'color':'white', 
-						  'background-color': 'red'});
-	var cells = Object.keys(board);
-	for( var i = 0; i < cells.length; i++ )
+	let messageBox = document.getElementById("messageBox");
+	messageBox.innerText = "Game Over!";
+	messageBox.style.color = "white";
+	messageBox.style.backgroundColor = "red";
+	let cells = Object.keys(board);
+	for( let i = 0; i < cells.length; i++ )
 	{
 		if( board[cells[i]].mined && !board[cells[i]].flagged )
 		{
-			$('#' + board[cells[i]].id ).html( MINE )
-										.css('color', 'black');
+		    let cellElement = document.getElementById( board[cells[i]].id );
+		    cellElement.innerHTML = MINE;
+		    cellElement.style.color = "black";
 		}
 	}
 	clearInterval(timeout);
