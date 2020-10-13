@@ -271,11 +271,11 @@ let calculateNeighborMineCounts = function( board, boardSize )
 	return board;
 }
 
-var getNeighbors = function( id )
+let getNeighbors = function( id )
 {
-	var row = parseInt(id[0]);
-	var column = parseInt(id[1]);
-	var neighbors = [];
+	let row = parseInt(id[0]);
+	let column = parseInt(id[1]);
+	let neighbors = [];
 	neighbors.push( (row - 1) + "" + (column - 1) );
 	neighbors.push( (row - 1) + "" + column );
 	neighbors.push( (row - 1) + "" + (column + 1) );
@@ -285,7 +285,7 @@ var getNeighbors = function( id )
 	neighbors.push( (row + 1) + "" + column );
 	neighbors.push( (row + 1) + "" + (column + 1) );
 
-	for( var i = 0; i < neighbors.length; i++)
+	for( let i = 0; i < neighbors.length; i++)
 	{ 
 	   if ( neighbors[i].length > 2 ) 
 	   {
