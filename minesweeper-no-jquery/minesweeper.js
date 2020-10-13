@@ -330,7 +330,7 @@ let isMined = function( board, id )
 	return mined;
 }
 
-var getRandomInteger = function( min, max )
+let getRandomInteger = function( min, max )
 {
 	return Math.floor( Math.random() * ( max - min ) ) + min;
 }
