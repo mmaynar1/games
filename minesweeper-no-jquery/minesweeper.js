@@ -47,39 +47,49 @@ let initializeCells = function( boardSize )
            row++;
        }
 
-       cellElement.addEventListener("click", function(e){
-            handleClick( e.currentTarget.id );
-            let isVictory = true;
-            let cells = Object.keys(board);
-            for( var i = 0; i < cells.length; i++ )
-            {
-                if( !board[cells[i]].mined )
-                {
-                    if( !board[cells[i]].opened )
-                    {
-                        isVictory = false;
-                        break;
-                    }
-                }
-            }
+       cellElement.removeEventListener('click', listenForClick );
+       cellElement.addEventListener('click', listenForClick );
 
-            if( isVictory )
-            {
-                gameOver = true;
-                let messageBoxElement = document.getElementById("messageBox");
-                messageBoxElement.innerText = "You Win!";
-                messageBoxElement.style.color = "white";
-                messageBoxElement.style.backgroundColor = "green";
-                clearInterval( timeout );
-            }
-       });
-
-        cellElement.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            handleRightClick( e.currentTarget.id );
-            return false;
-        }, false);
+       cellElement.removeEventListener('contextmenu', listenForRightClick );
+       cellElement.addEventListener('contextmenu', listenForRightClick );
     }
+}
+
+let listenForClick = function(e)
+{
+   e.target.removeEventListener('click', listenForClick, false);
+   handleClick( e.currentTarget.id );
+   let isVictory = true;
+   let cells = Object.keys(board);
+   for( var i = 0; i < cells.length; i++ )
+   {
+       if( !board[cells[i]].mined )
+       {
+           if( !board[cells[i]].opened )
+           {
+               isVictory = false;
+               break;
+           }
+       }
+   }
+
+   if( isVictory )
+   {
+       gameOver = true;
+       let messageBoxElement = document.getElementById("messageBox");
+       messageBoxElement.innerText = "You Win!";
+       messageBoxElement.style.color = "white";
+       messageBoxElement.style.backgroundColor = "green";
+       clearInterval( timeout );
+   }
+}
+
+let listenForRightClick = function(e)
+{
+    e.preventDefault();
+    e.target.removeEventListener('contextmenu', listenForRightClick, false);
+    handleRightClick( e.currentTarget.id );
+    return false;
 }
 
 var handleClick = function( id )
@@ -100,12 +110,20 @@ var handleClick = function( id )
 				{
 					if( cell.mined )
 					{
-						loss();		
-						cellElement.innerHTML =  MINE;
-						cellElement.style.color = "red";
+					    if( firstClick )
+					    {
+					        preventImmediateLoss(cell);
+					    }
+					    else
+					    {
+                            loss();
+                            cellElement.innerHTML =  MINE;
+                            cellElement.style.color = "red";
+						}
 					}
 					else
 					{
+					    firstClick = false;
 						cell.opened = true;
 						if( cell.neighborMineCount > 0 )
 						{
@@ -325,6 +343,25 @@ let getNumberColor = function( number )
 	return color;
 }
 
+let preventImmediateLoss = function( cell )
+{
+    firstClick = false;
+    cell.mined = false;
+    let cells = Object.keys(board);
+    shuffle(cells);
+    for( let i = 0; i < cells.length; i++ )
+    {
+        if( !board[cells[i]].mined && !board[cells[i]].flagged && !board[cells[i]].opened )
+        {
+            board[cells[i]].mined = true;
+            break;
+        }
+    }
+    board = calculateNeighborMineCounts( board, boardSize );
+    handleClick(cell.id);
+}
+
+
 let isMined = function( board, id )
 {	
 	let cell = board[id];
@@ -339,6 +376,16 @@ let isMined = function( board, id )
 let getRandomInteger = function( min, max )
 {
 	return Math.floor( Math.random() * ( max - min ) ) + min;
+}
+
+//https://javascript.info/task/shuffle
+function shuffle(array)
+{
+  for (let i = array.length - 1; i > 0; i--)
+  {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
 }
 
 let newGame = function( boardSize, mines )
@@ -356,6 +403,7 @@ let newGame = function( boardSize, mines )
 	minesRemainingElement.innerText = minesRemaining;
 
 	gameOver = false;
+	firstClick = true;
 	initializeCells( boardSize );
 	board = Board( boardSize, mines );
 	timer = 0;
@@ -373,13 +421,14 @@ let newGame = function( boardSize, mines )
 	return board;
 }
 
-let FLAG = "&#9873;";
-let MINE = "&#9881;";
+var FLAG = "&#9873;";
+var MINE = "&#9881;";
 let boardSize = 10;
 let mines = 10;
 let timer = 0;
 let timeout;
 let minesRemaining;
+let firstClick = true;
 
 document.addEventListener('keydown', event => {
      if(event.ctrlKey)
