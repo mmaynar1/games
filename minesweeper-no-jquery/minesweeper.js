@@ -177,28 +177,31 @@ let handleCtrlClick = function( id )
 	}
 }
 
-var handleRightClick = function( id )
+let handleRightClick = function( id )
 {
 	if( !gameOver )
 	{
-		var cell = board[id];
-		var $cell = $( '#' + id );
+		let cell = board[id];
+		let cellElement = document.getElementById( id );
 		if( !cell.opened )
 		{
 			if( !cell.flagged && minesRemaining > 0 )
 			{
 				cell.flagged = true;
-				$cell.html( FLAG ).css( 'color', 'red');
+				cellElement.innerHTML = FLAG;
+				cellElement.style.color = "red";
 				minesRemaining--;
 			}
 			else if( cell.flagged )
 			{
 				cell.flagged = false;
-				$cell.html( "" ).css( 'color', 'black');
+				cellElement.innerHTML = "";
+				cellElement.style.color  = "black";
 				minesRemaining++;
 			}
 
-			$( '#mines-remaining').text( minesRemaining );
+            let minesRemainingElement = document.getElementById( "mines-remaining" );
+            minesRemainingElement.innerText = minesRemaining
 		}
 	}
 }
