@@ -129,17 +129,16 @@ var handleClick = function( id )
 	}
 }
 
-var handleCtrlClick = function( id )
+let handleCtrlClick = function( id )
 {
-	var cell = board[id];
-	var $cell = $( '#' + id );
+	let cell = board[id];
 	if( cell.opened && cell.neighborMineCount > 0 )
 	{
-		var neighbors = getNeighbors( id );
-		var flagCount = 0;
-		var flaggedCells = [];
-		var neighbor;
-		for( var i = 0; i < neighbors.length; i++ )
+		let neighbors = getNeighbors( id );
+		let flagCount = 0;
+		let flaggedCells = [];
+		let neighbor;
+		for( let i = 0; i < neighbors.length; i++ )
 		{
 			neighbor = board[neighbors[i]];
 			if( neighbor.flagged )
@@ -149,10 +148,10 @@ var handleCtrlClick = function( id )
 			flagCount += neighbor.flagged;
 		}
 
-		var lost = false;
+		let lost = false;
 		if( flagCount === cell.neighborMineCount )
 		{
-			for( i = 0; i < flaggedCells.length; i++ )
+			for( let i = 0; i < flaggedCells.length; i++ )
 			{
 				if( flaggedCells[i].flagged && !flaggedCells[i].mined )
 				{
@@ -164,7 +163,7 @@ var handleCtrlClick = function( id )
 
 			if( !lost )
 			{
-				for( var i = 0; i < neighbors.length; i++ )
+				for( let i = 0; i < neighbors.length; i++ )
 				{
 					neighbor = board[neighbors[i]];
 					if( !neighbor.flagged && !neighbor.opened )
