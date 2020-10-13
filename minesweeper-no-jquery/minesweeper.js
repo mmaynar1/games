@@ -86,8 +86,8 @@ var handleClick = function( id )
 		}
 		else
 		{
-			var cell = board[id];
-			var $cell = $( '#' + id );
+			let cell = board[id];
+			let cellElement = document.getElementById( id );
 			if( !cell.opened )
 			{
 				if( !cell.flagged )
@@ -95,22 +95,24 @@ var handleClick = function( id )
 					if( cell.mined )
 					{
 						loss();		
-						$cell.html( MINE ).css( 'color', 'red');		
+						cellElement.innerHTML =  MINE;
+						cellElement.style.color = "red";
 					}
 					else
 					{
 						cell.opened = true;
 						if( cell.neighborMineCount > 0 )
 						{
-							var color = getNumberColor( cell.neighborMineCount );
-							$cell.html( cell.neighborMineCount ).css( 'color', color );
+							let color = getNumberColor( cell.neighborMineCount );
+							cellElement.innerHTML = cell.neighborMineCount;
+							cellElement.style.color = color;
 						}
 						else
 						{
-							$cell.html( "" )
-								 .css( 'background-image', 'radial-gradient(#e6e6e6,#c9c7c7)');
-							var neighbors = getNeighbors( id );
-							for( var i = 0; i < neighbors.length; i++ )
+							cellElement.innerHTML = "";
+							cellElement.style.backgroundImage = 'radial-gradient(#e6e6e6,#c9c7c7)';
+							let neighbors = getNeighbors( id );
+							for( let i = 0; i < neighbors.length; i++ )
 							{
 								var neighbor = neighbors[i];
 								if(  typeof board[neighbor] !== 'undefined' &&
