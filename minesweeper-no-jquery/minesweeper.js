@@ -367,26 +367,29 @@ let newGame = function( boardSize, mines )
 	return board;
 }
 
-var FLAG = "&#9873;";
-var MINE = "&#9881;";
-var boardSize = 10;
-var mines = 10;
-var timer = 0;
-var timeout;
-var minesRemaining;
+let FLAG = "&#9873;";
+let MINE = "&#9881;";
+let boardSize = 10;
+let mines = 10;
+let timer = 0;
+let timeout;
+let minesRemaining;
 
-$(document).keydown(function(event){
-    if(event.ctrlKey)
-        ctrlIsPressed = true;
+document.addEventListener('keydown', event => {
+     if(event.ctrlKey)
+     {
+         ctrlIsPressed = true;
+     }
 });
 
-$(document).keyup(function(){
-    ctrlIsPressed = false;
+document.addEventListener('keyup', event => {
+     ctrlIsPressed = false;
 });
 
-var ctrlIsPressed = false;
+let ctrlIsPressed = false;
 var board = newGame( boardSize, mines );
 
-$('#new-game-button').click( function(){
-	board = newGame( boardSize, mines );
-})
+let newGameButton = document.getElementById("new-game-button");
+newGameButton.addEventListener("click", function(){
+     board = newGame( boardSize, mines );
+});
