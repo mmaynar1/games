@@ -27,53 +27,59 @@ function Board( boardSize, mineCount )
 }
 
 
-var initializeCells = function( boardSize ) 
+let initializeCells = function( boardSize )
 {
-	var row  = 0;
-	var column = 0;
-	$( ".cell" ).each( function(){
-		$(this).attr( "id", row + "" + column ).css('color', 'black').text("");
-		$('#' + row + "" + column ).css('background-image', 
-										'radial-gradient(#fff,#e6e6e6)');
-		column++;
-		if( column >= boardSize )
-		{
-			column = 0;
-			row++;
-		}
+	let row  = 0;
+	let column = 0;
+	let cells = document.getElementsByClassName("cell");
+    for(let i = 0; i < cells.length; i++)
+    {
+       let cellElement = cells.item(i);
+       cellElement.id = row + "" + column;
+       cellElement.style.color = "black";
+       cellElement.innerText = "";
+       cellElement.style.backgroundImage = "radial-gradient(#fff,#e6e6e6)";
 
-		$(this).off().click(function(e)
-		{
-		    handleClick( $(this).attr("id") );
-		    var isVictory = true;
-			var cells = Object.keys(board);
-			for( var i = 0; i < cells.length; i++ )
-			{
-				if( !board[cells[i]].mined )
-				{
-					if( !board[cells[i]].opened )
-					{
-						isVictory = false;
-						break;
-					}
-				}
-			}
+       column++;
+       if( column >= boardSize )
+       {
+           column = 0;
+           row++;
+       }
 
-			if( isVictory )
-			{
-				gameOver = true;
-				$('#messageBox').text('You Win!').css({'color': 'white',
-													   'background-color': 'green'});
-				clearInterval( timeout );
-			}
-		});
+       cellElement.addEventListener("click", function(e){
+            handleClick( e.currentTarget.id );
+            let isVictory = true;
+            let cells = Object.keys(board);
+            for( var i = 0; i < cells.length; i++ )
+            {
+                if( !board[cells[i]].mined )
+                {
+                    if( !board[cells[i]].opened )
+                    {
+                        isVictory = false;
+                        break;
+                    }
+                }
+            }
 
-		$(this).contextmenu(function(e)
-		{
-		    handleRightClick( $(this).attr("id") );
-		    return false;
-		});
-	})
+            if( isVictory )
+            {
+                gameOver = true;
+                let messageBoxElement = document.getElementById("messageBox");
+                messageBoxElement.innerText = "You Win!";
+                messageBoxElement.style.color = "white";
+                messageBoxElement.style.backgroundColor = "green";
+                clearInterval( timeout );
+            }
+       });
+
+        cellElement.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            handleRightClick( e.currentTarget.id );
+            return false;
+        }, false);
+    }
 }
 
 var handleClick = function( id )
