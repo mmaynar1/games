@@ -6,4 +6,5 @@
 [Minesweeper No jQuery](https://mitchum.blog/revisit-minesweeper/)\
 [Snake](https://mitchum.blog/how-to-build-snake-with-javascript/)\
 [Hangman](https://mitchum.blog/how-to-build-hangman-with-javascript/)\
-[Crossword Puzzle Generator](https://mitchum.blog/building-a-crossword-puzzle-generator-with-javascript/)
+[Crossword Puzzle Generator](https://mitchum.blog/building-a-crossword-puzzle-generator-with-javascript/)\
+[Magic Eight Ball](https://mitchum.blog/how-to-build-a-magic-eight-ball-with-javascript/)
