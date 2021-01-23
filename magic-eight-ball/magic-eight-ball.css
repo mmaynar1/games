@@ -1,0 +1,27 @@
+body {
+  background: cornflowerblue;
+}
+
+main {
+  max-width: 610px;
+  margin: auto;
+}
+
+h3, h5, #answerButton, #magicEightBall {
+  text-align: center;
+  color: khaki;
+  margin: 5px;
+}
+
+#circle {
+  font-size: 14pt;
+  background-color: white;
+  color: black;
+  position: absolute;
+  margin-left: 70px;
+  margin-top: 70px;
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  display: none;
+}
