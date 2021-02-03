@@ -184,12 +184,41 @@ function Board( teams )
     	cleanUpHangingNodes();
 	}
 
+    let calculateDiceBonus = function()
+    {
+        let bonuses = {};
+        teams.forEach( team => bonuses[team.color] = 0 );
+
+        for( let y = 0; y < gridSize; y++ )
+        {
+            for( let x = 0; x < gridSize; x++ )
+            {
+                let node = grid[y][x];
+                if( node != vacant )
+                {
+                    let color = node.team.color;
+                    let connectedNodes = findNumberConnected(y,x,grid);
+                    if( bonuses[color] < connectedNodes )
+                    {
+                        bonuses[color] = connectedNodes;
+                    }
+                }
+            }
+        }
+        return bonuses;
+    }
+
 	let findNumberConnected = function(y, x, grid)
     {
+        //https://stackoverflow.com/questions/21716926/finding-connected-cells-in-a-2d-array
         let canUp = (y - 1 >= 0);
         let canDown = (y + 1 < gridSize);
         let canRight = (x + 1 < gridSize);
         let canLeft = (x - 1 >= 0);
+        let canUpRight = canUp && canRight;
+        let canUpLeft = canUp && canLeft;
+        let canDownRight = canDown && canRight;
+        let canDownLeft = canDown && canLeft;
 
         let node = grid[y][x];
         let color = node.team.color
@@ -198,9 +227,29 @@ function Board( teams )
         let down = 0;
         let right = 0;
         let left = 0;
+        let upRight = 0;
+        let upLeft = 0;
+        let downRight = 0;
+        let downLeft = 0;
 
         node.checked = true;
 
+        if (canUpRight && grid[y-1][x+1] !== vacant && grid[y-1][x+1].team.color == color && grid[y-1][x+1].checked === false )
+        {
+            upRight = findNumberConnected(y-1,x+1,grid);
+        }
+        if (canUpLeft && grid[y-1][x-1] !== vacant && grid[y-1][x-1].team.color == color && grid[y-1][x-1].checked === false )
+        {
+            upLeft = findNumberConnected(y-1,x-1,grid);
+        }
+        if (canDownRight && grid[y+1][x+1] !== vacant && grid[y+1][x+1].team.color == color && grid[y+1][x+1].checked === false )
+        {
+            downRight = findNumberConnected(y+1,x+1,grid);
+        }
+        if (canDownLeft && grid[y+1][x-1] !== vacant && grid[y+1][x-1].team.color == color && grid[y+1][x-1].checked === false )
+        {
+            downLeft = findNumberConnected(y+1,x-1,grid);
+        }
         if (canUp && grid[y-1][x] !== vacant && grid[y-1][x].team.color == color && grid[y-1][x].checked === false )
         {
             up = findNumberConnected(y-1,x,grid);
@@ -218,12 +267,12 @@ function Board( teams )
             right = findNumberConnected(y,x+1,grid);
         }
 
-        return up + left + right + down + 1;
+        return up + left + right + down + upLeft + upRight + downLeft + downRight + 1;
     }
 
 	return {
 		"setupBoard": setupBoard,
 		"grid": grid,
-		"findNumberConnected": findNumberConnected
+		"calculateDiceBonus": calculateDiceBonus
 	};
 }
