@@ -49,7 +49,7 @@ function Board( teams )
                     value = 3;
                  }
 
-                 let node = new Node(0, 0, teams[team], value)
+                 let node = new Node(0, 0, teams[team], value, false)
                  nodes.push(node);
             }
         }
@@ -69,7 +69,7 @@ function Board( teams )
                     let hanging = isNodeHanging( node );
                     if( hanging )
                     {
-                        let newNode = new Node(x, y, node.team, node.value)
+                        let newNode = new Node(x, y, node.team, node.value, false )
                         grid[y][x] = vacant;
                         hangingNodes.push( newNode );
                     }
@@ -184,8 +184,46 @@ function Board( teams )
     	cleanUpHangingNodes();
 	}
 
+	let findNumberConnected = function(y, x, grid)
+    {
+        let canUp = (y - 1 >= 0);
+        let canDown = (y + 1 < gridSize);
+        let canRight = (x + 1 < gridSize);
+        let canLeft = (x - 1 >= 0);
+
+        let node = grid[y][x];
+        let color = node.team.color
+
+        let up = 0;
+        let down = 0;
+        let right = 0;
+        let left = 0;
+
+        node.checked = true;
+
+        if (canUp && grid[y-1][x] !== vacant && grid[y-1][x].team.color == color && grid[y-1][x].checked === false )
+        {
+            up = findNumberConnected(y-1,x,grid);
+        }
+        if (canDown && grid[y+1][x] !== vacant && grid[y+1][x].team.color == color && grid[y+1][x].checked === false)
+        {
+            down = findNumberConnected(y+1,x,grid);
+        }
+        if (canLeft && grid[y][x-1] !== vacant && grid[y][x-1].team.color == color && grid[y][x-1].checked === false)
+        {
+            left = findNumberConnected(y,x-1,grid);
+        }
+        if (canRight && grid[y][x+1] !== vacant && grid[y][x+1].team.color == color && grid[y][x+1].checked === false)
+        {
+            right = findNumberConnected(y,x+1,grid);
+        }
+
+        return up + left + right + down + 1;
+    }
+
 	return {
 		"setupBoard": setupBoard,
-		"grid": grid
+		"grid": grid,
+		"findNumberConnected": findNumberConnected
 	};
 }
