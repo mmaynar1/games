@@ -205,7 +205,17 @@ function Board( teams )
                 }
             }
         }
+
+        grid.forEach( row => row.forEach( node => uncheckNode( node )));
         return bonuses;
+    }
+
+    let uncheckNode = function( node )
+    {
+        if( node !== vacant )
+        {
+            node.checked = false;
+        }
     }
 
 	let findNumberConnected = function(y, x, grid)
