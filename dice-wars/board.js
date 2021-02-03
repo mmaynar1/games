@@ -14,12 +14,12 @@ function Board( teams )
         {
             let x = getRandomInteger(0, gridSize);
             let y = getRandomInteger(0, gridSize);
-            while( picked.includes( x + "" + y) ||
-                   x === second  ||
-                   x === secondToLast ||
-                   y === second ||
-                   y === secondToLast
-                   )
+            while ( picked.includes( x + "" + y) ||
+                    x === second  ||
+                    x === secondToLast ||
+                    y === second ||
+                    y === secondToLast
+            )
             {
                 x = getRandomInteger(0, gridSize);
                 y = getRandomInteger(0, gridSize);
@@ -40,11 +40,11 @@ function Board( teams )
             for( let i = 0; i < nodesPerTeam; i++ )
             {
                  let value = 2;
-                 if( i === 0 )
+                 if( i === 0 || i === 1 )
                  {
                     value = 1;
                  }
-                 else if( i === nodesPerTeam - 1 )
+                 else if( i === nodesPerTeam - 1 || i === nodesPerTeam - 2 )
                  {
                     value = 3;
                  }
