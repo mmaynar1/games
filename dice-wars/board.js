@@ -152,6 +152,45 @@ function Board( teams )
         return node;
     }
 
+    let getAttackableNodes = function( x, y )
+    {
+        let selectedNode = getNode( x , y );
+
+        let nodes = [];
+        nodes.push( getNode( x, y - 1 ) );
+        nodes.push( getNode( x, y + 1 ) );
+        nodes.push( getNode( x + 1, y - 1 ) );
+        nodes.push( getNode( x + 1, y + 1 ) );
+        nodes.push( getNode( x - 1, y - 1 ) );
+        nodes.push( getNode( x - 1, y + 1 ) );
+        nodes.push( getNode( x + 1, y ) );
+        nodes.push( getNode( x - 1, y ) );
+
+        let attackables = [];
+        nodes.forEach( node => addAttackable(attackables, node, selectedNode.team.color ) );
+        return attackables;
+    }
+
+    let addAttackable = function( attackables, node, color )
+    {
+        if( node != vacant && node.team.color !== color )
+        {
+            attackables.push( node );
+        }
+    }
+
+    let getNode = function( x , y )
+    {
+        if( x < 0 || x >= gridSize || y < 0 || y >= gridSize )
+        {
+            return vacant;
+        }
+        else
+        {
+            return grid[y][x];
+        }
+    }
+
 	let setupBoard = function()
 	{
 		let occupiedNodes = getOccupiedNodes();
@@ -283,6 +322,7 @@ function Board( teams )
 	return {
 		"setupBoard": setupBoard,
 		"grid": grid,
-		"calculateDiceBonus": calculateDiceBonus
+		"calculateDiceBonus": calculateDiceBonus,
+		"getAttackableNodes": getAttackableNodes
 	};
 }
