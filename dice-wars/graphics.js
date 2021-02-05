@@ -19,6 +19,19 @@ function Graphics()
                 let nodeSize = ( displaySize / gridSize ) + "px";
                 div.style.height = nodeSize;
                 div.style.width = nodeSize;
+                div.addEventListener("click", function(){
+                    let clickResults = board.handleClick( x, y );
+                    if( clickResults.attackables )
+                    {
+                        console.log("attackables");
+                        clickResults.attackables.forEach( node => logNode( node ));
+                    }
+                    else if( clickResults.attacking )
+                    {
+                        console.log("attacking");
+                        logNode(clickResults.attacking);
+                    }
+                });
 
                 if( board.grid[y][x] === vacant )
                 {

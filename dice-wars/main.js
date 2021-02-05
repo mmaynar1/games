@@ -9,6 +9,11 @@ let shuffle = function(o)
   return o;
 };
 
+let logNode = function( node )
+{
+    console.log( "( " + node.x + ", " + node.y + " )" );
+};
+
 let teams = [
     new Team(0,'orangered'),
     new Team(1,'dodgerblue'),
@@ -17,9 +22,12 @@ let teams = [
     new Team(4,'plum')
 ]
 
-let gridSize = 12;
+let gridSize = 8;
 let nodeCount = gridSize * gridSize;
 let vacant = -1;
+let playerTeam = teams[0];
+let nodeSelected = false;
+let turnColor = playerTeam.color;
 
 let board = new Board( teams );
 let graphics = new Graphics();

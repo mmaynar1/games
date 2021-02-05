@@ -49,7 +49,7 @@ function Board( teams )
                     value = 3;
                  }
 
-                 let node = new Node(0, 0, teams[team], value, false)
+                 let node = new Node(0, 0, teams[team], value, false, false )
                  nodes.push(node);
             }
         }
@@ -69,7 +69,7 @@ function Board( teams )
                     let hanging = isNodeHanging( node );
                     if( hanging )
                     {
-                        let newNode = new Node(x, y, node.team, node.value, false )
+                        let newNode = new Node(x, y, node.team, node.value, false, false )
                         grid[y][x] = vacant;
                         hangingNodes.push( newNode );
                     }
@@ -245,11 +245,26 @@ function Board( teams )
             }
         }
 
-        grid.forEach( row => row.forEach( node => uncheckNode( node )));
+        applyToEachNode( uncheck );
         return bonuses;
     }
 
-    let uncheckNode = function( node )
+    let applyToEachNode = function( f )
+    {
+        let results = {};
+        grid.forEach( row => row.forEach( node => f( node, results )));
+        return results;
+    }
+
+    let findAttackables = function( node, results )
+    {
+        if( node !== vacant && node.selected && node.team.color === turnColor )
+        {
+            results["attackables"] = getAttackableNodes( node.x, node.y );
+        }
+    }
+
+    let uncheck = function( node )
     {
         if( node !== vacant )
         {
@@ -319,10 +334,58 @@ function Board( teams )
         return up + left + right + down + upLeft + upRight + downLeft + downRight + 1;
     }
 
+    let handleClick = function( x, y )
+    {
+        let clickResults = {};
+
+        let node = getNode( x, y );
+        if( node === vacant || node.selected )
+        {
+            node.selected = false;
+            nodeSelected = false;
+            //todo clear graphics from attackables
+        }
+        else if( !node.selected )
+        {
+            if( nodeSelected )
+            {
+                //todo get the selected node and find its attackables
+                //todo see if the clicked node is an attackable
+                //todo attack the node, update grid, and return result to graphics engine
+                if( node.team.color !== turnColor )
+                {
+                    let results = applyToEachNode( findAttackables );
+                    for( let i = 0; i < results.attackables.length; i++ )
+                    {
+                        if( node.x === results.attackables[i].x && node.y === results.attackables[i].y )
+                        {
+                            clickResults["attacking"] = node;
+                            node.selected = false;
+                            nodeSelected = false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if( node.team.color === turnColor )
+                {
+                    node.selected = true;
+                    nodeSelected = true;
+                    let attackables = getAttackableNodes( x, y );
+                    clickResults["attackables"] = attackables;
+                }
+            }
+        }
+
+        return clickResults;
+    }
+
 	return {
 		"setupBoard": setupBoard,
 		"grid": grid,
 		"calculateDiceBonus": calculateDiceBonus,
-		"getAttackableNodes": getAttackableNodes
+		"getAttackableNodes": getAttackableNodes,
+		"handleClick": handleClick
 	};
 }
