@@ -272,6 +272,14 @@ function Board( teams )
         }
     }
 
+    let unselect = function( node )
+    {
+        if( node !== vacant )
+        {
+            node.selected = false;
+        }
+    }
+
 	let findNumberConnected = function(y, x, grid)
     {
         //https://stackoverflow.com/questions/21716926/finding-connected-cells-in-a-2d-array
@@ -336,6 +344,19 @@ function Board( teams )
 
     let handleClick = function( x, y )
     {
+        let prepareToAttack = function( color, node, clickResults )
+        {
+            applyToEachNode( unselect );
+            nodeSelected = false;
+            if( node.team.color === turnColor )
+            {
+                node.selected = true;
+                nodeSelected = true;
+                let attackables = getAttackableNodes( node.x, node.y );
+                clickResults["attackables"] = attackables;
+            }
+        }
+
         let clickResults = {};
 
         let node = getNode( x, y );
@@ -343,14 +364,11 @@ function Board( teams )
         {
             node.selected = false;
             nodeSelected = false;
-            //todo clear graphics from attackables
         }
         else if( !node.selected )
         {
             if( nodeSelected )
             {
-                //todo get the selected node and find its attackables
-                //todo see if the clicked node is an attackable
                 //todo attack the node, update grid, and return result to graphics engine
                 if( node.team.color !== turnColor )
                 {
@@ -360,21 +378,19 @@ function Board( teams )
                         if( node.x === results.attackables[i].x && node.y === results.attackables[i].y )
                         {
                             clickResults["attacking"] = node;
-                            node.selected = false;
-                            nodeSelected = false;
                         }
                     }
+                    node.selected = false;
+                    nodeSelected = false;
+                }
+                else
+                {
+                    prepareToAttack( turnColor, node, clickResults );
                 }
             }
             else
             {
-                if( node.team.color === turnColor )
-                {
-                    node.selected = true;
-                    nodeSelected = true;
-                    let attackables = getAttackableNodes( x, y );
-                    clickResults["attackables"] = attackables;
-                }
+                prepareToAttack( turnColor, node, clickResults );
             }
         }
 

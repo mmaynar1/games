@@ -21,10 +21,17 @@ function Graphics()
                 div.style.width = nodeSize;
                 div.addEventListener("click", function(){
                     let clickResults = board.handleClick( x, y );
+
+                    let elements = document.getElementsByClassName("node");
+                    for( let i = 0; i < elements.length; i++ )
+                    {
+                        elements[i].classList.remove("target");
+                    }
+
                     if( clickResults.attackables )
                     {
                         console.log("attackables");
-                        clickResults.attackables.forEach( node => logNode( node ));
+                        clickResults.attackables.forEach( node => document.getElementById(node.x + "_" + node.y ).classList.add("target"));
                     }
                     else if( clickResults.attacking )
                     {

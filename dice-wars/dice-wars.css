@@ -19,3 +19,8 @@ main {
     display: table-cell;
     vertical-align:middle;
 }
+
+.target {
+    font-weight: bold;
+    opacity: 0.5;
+}
