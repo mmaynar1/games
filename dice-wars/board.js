@@ -306,6 +306,7 @@ function Board( teams )
 
         node.checked = true;
 
+        //todo make some functions you idiot.
         if (canUpRight && grid[y-1][x+1] !== vacant && grid[y-1][x+1].team.color == color && grid[y-1][x+1].checked === false )
         {
             upRight = findNumberConnected(y-1,x+1,grid);
@@ -348,7 +349,7 @@ function Board( teams )
         {
             applyToEachNode( unselect );
             nodeSelected = false;
-            if( node.team.color === turnColor )
+            if( node.team.color === turnColor && node.value > 1 )
             {
                 node.selected = true;
                 nodeSelected = true;
