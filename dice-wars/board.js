@@ -256,6 +256,20 @@ function Board( teams )
         return results;
     }
 
+    let getSelectedNode = function()
+    {
+        let selected = function( node, results )
+        {
+            if( node !== vacant && node.selected )
+            {
+                results["selectedNode"] = node;
+            }
+        }
+
+        let results = applyToEachNode( selected );
+        return results["selectedNode"];
+    }
+
     let findAttackables = function( node, results )
     {
         if( node !== vacant && node.selected && node.team.color === turnColor )
@@ -379,6 +393,17 @@ function Board( teams )
                         if( node.x === results.attackables[i].x && node.y === results.attackables[i].y )
                         {
                             clickResults["attacking"] = node;
+                            let selectedNode = getSelectedNode();
+                            if( rollDice( node ) >= rollDice( selectedNode ) )
+                            {
+                                selectedNode.value = 1;
+                            }
+                            else
+                            {
+                                node.value = selectedNode.value - 1;
+                                node.team = selectedNode.team;
+                                selectedNode.value = 1;
+                            }
                         }
                     }
                     node.selected = false;
@@ -396,6 +421,16 @@ function Board( teams )
         }
 
         return clickResults;
+    }
+
+    let rollDice = function( node )
+    {
+        let total = 0;
+        for( let i = 0; i < node.value; i++ )
+        {
+            total += getRandomInteger(1,6);
+        }
+        return total;
     }
 
 	return {

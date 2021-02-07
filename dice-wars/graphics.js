@@ -4,6 +4,7 @@ function Graphics()
     {
         let displaySize = 400; //pixels
         let gridDiv = document.getElementById("grid");
+        document.querySelectorAll('.node').forEach(e => e.remove());
         gridDiv.style.height = displaySize + "px";
         gridDiv.style.width = displaySize + "px";
         let row = 0;
@@ -37,6 +38,7 @@ function Graphics()
                     {
                         console.log("attacking");
                         logNode(clickResults.attacking);
+                        display( board );
                     }
                 });
 
