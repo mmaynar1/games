@@ -2,7 +2,8 @@ function Board( teams )
 {
     let vacantNodeCount = Math.floor(nodeCount / getRandomInteger(5,9));
     let occupiedNodeCount = nodeCount - vacantNodeCount;
-	let grid = Array.from(Array( gridSize ), () => new Array( gridSize ))
+	let grid = Array.from(Array( gridSize ), () => new Array( gridSize ));
+	let turnIndex = 0;
 
     let getVacantNodes = function()
     {
@@ -433,11 +434,25 @@ function Board( teams )
         return total;
     }
 
+    let advanceTurn = function()
+    {
+        if( turnIndex >= teams.length - 1 )
+        {
+            turnIndex = 0;
+        }
+        else
+        {
+            turnIndex++;
+        }
+        turnColor = teams[turnIndex].color;
+    }
+
 	return {
 		"setupBoard": setupBoard,
 		"grid": grid,
 		"calculateDiceBonus": calculateDiceBonus,
 		"getAttackableNodes": getAttackableNodes,
-		"handleClick": handleClick
+		"handleClick": handleClick,
+		"advanceTurn": advanceTurn
 	};
 }
