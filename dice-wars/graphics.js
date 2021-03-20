@@ -57,7 +57,7 @@ function Graphics()
 
         displayTeams( teams );
         let playerDiv = document.getElementById("player_" + board.getTurnIndex());
-        playerDiv.style.boxShadow = "0px 0px 10px 10px white";
+        playerDiv.style.boxShadow = "0px 0px 15px 2px white";
     }
 
     let displayTeams = function( teams )
