@@ -33,5 +33,6 @@ let board = new Board( teams );
 let graphics = new Graphics();
 board.setupBoard();
 graphics.display( board );
+graphics.displayTeams( teams );
 
 

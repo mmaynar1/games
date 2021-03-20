@@ -56,7 +56,24 @@ function Graphics()
         }
     }
 
+    let displayTeams = function( teams )
+    {
+        let playersDiv = document.getElementById("players");
+        playersDiv.innerHTML = "";
+        for( let i = 0; i < teams.length; i++ )
+        {
+             let span = document.createElement("SPAN");
+             span.id = "player_" + i;
+             span.classList.add("player");
+             span.style.backgroundColor = teams[i].color;
+             let prefix = i === 0 ? "P" : "C";
+             span.innerHTML = prefix + "00";
+             playersDiv.appendChild(span);
+        }
+    }
+
     	return {
-    		"display": display
+    		"display": display,
+    		"displayTeams": displayTeams
     	};
 }

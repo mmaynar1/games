@@ -24,3 +24,16 @@ main {
     font-weight: bold;
     opacity: 0.5;
 }
+
+.players {
+    height:35px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.player {
+    border-radius: 50px;
+    padding: 5px;
+    border:2px solid white;
+    color: white;
+}
