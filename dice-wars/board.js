@@ -436,6 +436,7 @@ function Board( teams )
 
     let advanceTurn = function()
     {
+        applyBonus();
         if( turnIndex >= teams.length - 1 )
         {
             turnIndex = 0;
@@ -445,6 +446,36 @@ function Board( teams )
             turnIndex++;
         }
         turnColor = teams[turnIndex].color;
+    }
+
+    let applyBonus = function()
+    {
+        let bonuses = calculateDiceBonus();
+        let color = teams[turnIndex].color;
+        let bonus = bonuses[color];
+        let vacancies = true;
+        while( bonus > 0 && vacancies )
+        {
+            vacancies = false
+            for( let y = 0; y < gridSize; y++ )
+            {
+                for( let x = 0; x < gridSize; x++ )
+                {
+                    let node = grid[y][x];
+                    if( node != vacant )
+                    {
+                        if( node.team.color === color &&
+                            bonus > 0 &&
+                            node.value < 8 )
+                        {
+                            node.value++;
+                            bonus--;
+                            vacancies = true;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     let getTurnIndex = function()
