@@ -54,6 +54,10 @@ function Graphics()
                 gridDiv.appendChild(div);
             }
         }
+
+        displayTeams( teams );
+        let playerDiv = document.getElementById("player_" + board.getTurnIndex());
+        playerDiv.style.boxShadow = "0px 0px 10px 10px white";
     }
 
     let displayTeams = function( teams )

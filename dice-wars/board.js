@@ -447,12 +447,18 @@ function Board( teams )
         turnColor = teams[turnIndex].color;
     }
 
+    let getTurnIndex = function()
+    {
+        return turnIndex;
+    }
+
 	return {
 		"setupBoard": setupBoard,
 		"grid": grid,
 		"calculateDiceBonus": calculateDiceBonus,
 		"getAttackableNodes": getAttackableNodes,
 		"handleClick": handleClick,
-		"advanceTurn": advanceTurn
+		"advanceTurn": advanceTurn,
+		"getTurnIndex": getTurnIndex
 	};
 }
