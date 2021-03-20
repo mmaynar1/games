@@ -54,13 +54,10 @@ function Graphics()
                 gridDiv.appendChild(div);
             }
         }
-
-        displayTeams( teams );
-        let playerDiv = document.getElementById("player_" + board.getTurnIndex());
-        playerDiv.style.boxShadow = "0px 0px 15px 2px white";
+        displayTeams( teams, board.calculateDiceBonus() );
     }
 
-    let displayTeams = function( teams )
+    let displayTeams = function( teams, bonuses )
     {
         let playersDiv = document.getElementById("players");
         playersDiv.innerHTML = "";
@@ -71,9 +68,13 @@ function Graphics()
              span.classList.add("player");
              span.style.backgroundColor = teams[i].color;
              let prefix = i === 0 ? "P" : "C";
-             span.innerHTML = prefix + "00";
+             let bonus = bonuses[teams[i].color];
+             bonus = bonus.length > 1 ? bonus : " " + bonus;
+             span.innerHTML = prefix + bonus;
              playersDiv.appendChild(span);
         }
+        let playerDiv = document.getElementById("player_" + board.getTurnIndex());
+        playerDiv.style.boxShadow = "0px 0px 15px 2px white";
     }
 
     	return {
