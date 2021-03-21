@@ -34,4 +34,9 @@ let graphics = new Graphics();
 board.setupBoard();
 graphics.display( board );
 
+let endTurn = function()
+{
+    board.advanceTurn( graphics, board );
+}
+
 

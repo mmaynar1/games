@@ -434,12 +434,13 @@ function Board( teams )
         return total;
     }
 
-    let advanceTurn = function()
+    let advanceTurn = function( graphics, board )
     {
         applyBonus();
         if( turnIndex >= teams.length - 1 )
         {
             turnIndex = 0;
+            graphics.display( board );
         }
         else
         {
@@ -450,7 +451,7 @@ function Board( teams )
         if( turnIndex != 0 )
         {
             makeSmartAttacks( turnColor );
-            setTimeout(function(){ advanceTurn(); }, 1000 );
+            setTimeout(function(){ advanceTurn(graphics, board); }, 1000 );
         }
     }
 
