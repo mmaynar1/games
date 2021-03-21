@@ -446,6 +446,12 @@ function Board( teams )
             turnIndex++;
         }
         turnColor = teams[turnIndex].color;
+
+        if( turnIndex != 0 )
+        {
+            makeSmartAttacks( turnColor );
+            setTimeout(function(){ advanceTurn(); }, 1000 );
+        }
     }
 
     let applyBonus = function()
@@ -476,6 +482,47 @@ function Board( teams )
                 }
             }
         }
+    }
+
+    let makeSmartAttacks = function( color )
+    {
+        let attackOptions = getAttackOptions( color );
+        for (const [key, value] of Object.entries(attackOptions))
+        {
+            let keyArray = key.split("_");
+            let x = keyArray[0];
+            let y = keyArray[1];
+            let nodeValue = keyArray[2];
+            for( let i = 0; i < value.length; i++ )
+            {
+                if( value[i].value < nodeValue )
+                {
+                    document.getElementById(x+"_"+y).click();
+                    document.getElementById(value[i].x + "_" + value[i].y).click();
+                    break;
+                }
+            }
+        }
+    }
+
+    let getAttackOptions = function( color )
+    {
+        let attackOptions = {};
+        for( let y = 0; y < gridSize; y++ )
+        {
+            for( let x = 0; x < gridSize; x++ )
+            {
+                let node = grid[y][x];
+                if( node != vacant )
+                {
+                    if( node.team.color === color )
+                    {
+                        attackOptions[x + "_" + y + "_" + node.value] = getAttackableNodes( x, y );
+                    }
+                }
+            }
+        }
+        return attackOptions;
     }
 
     let getTurnIndex = function()
