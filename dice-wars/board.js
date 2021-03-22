@@ -4,6 +4,7 @@ function Board( teams )
     let occupiedNodeCount = nodeCount - vacantNodeCount;
 	let grid = Array.from(Array( gridSize ), () => new Array( gridSize ));
 	let turnIndex = 0;
+	let MAX_NODE_VALUE = 8;
 
     let getVacantNodes = function()
     {
@@ -473,7 +474,7 @@ function Board( teams )
                     {
                         if( node.team.color === color &&
                             bonus > 0 &&
-                            node.value < 8 )
+                            node.value < MAX_NODE_VALUE )
                         {
                             node.value++;
                             bonus--;
@@ -496,7 +497,7 @@ function Board( teams )
             let nodeValue = keyArray[2];
             for( let i = 0; i < value.length; i++ )
             {
-                if( value[i].value < nodeValue )
+                if( value[i].value < nodeValue || (value[i].value == MAX_NODE_VALUE && nodeValue == MAX_NODE_VALUE ) )
                 {
                     document.getElementById(x+"_"+y).click();
                     document.getElementById(value[i].x + "_" + value[i].y).click();
