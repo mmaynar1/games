@@ -55,6 +55,14 @@ function Graphics()
             }
         }
         displayTeams( teams, board.calculateDiceBonus() );
+        let gameStatus = board.getGameStatus();
+
+        let messageBox = document.getElementById("message");
+        if( gameStatus === "won" || gameStatus === "lost" )
+        {
+            message.innerHTML = "You " + gameStatus + "!";
+            document.getElementById("modal").style.display = "block";
+        }
     }
 
     let displayTeams = function( teams, bonuses )
@@ -77,14 +85,7 @@ function Graphics()
         let playerDiv = document.getElementById("player_" + turn);
         playerDiv.style.boxShadow = "0px 0px 15px 2px white";
         let endTurnButton = document.getElementById("endTurnButton");
-        if( turn == 0 )
-        {
-            endTurnButton.style.display = "initial";
-        }
-        else
-        {
-            endTurnButton.style.display = "none";
-        }
+        endTurnButton.style.display = turn == 0 ? "initial" : "none";
     }
 
     	return {

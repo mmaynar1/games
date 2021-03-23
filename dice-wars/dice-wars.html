@@ -14,7 +14,19 @@
       <div id="players" class="players" style="width: 400px;">
       </div>
       <br>
-      <button class="button" id="endTurnButton" onclick="endTurn();" type="button">End Turn</button>
+      <button class="button" id="endTurnButton" onclick="endTurn();" style="margin-left: 20%;" type="button">End Turn</button>
+
+      <!-- The Modal -->
+      <div id="modal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p id="message"></p>
+          <button class="button" type="button" onclick="closeModalButton.click();">Play Again!</button>
+        </div>
+
+      </div>
     </main>
     <script src="team.js"></script>
     <script src="node.js"></script>

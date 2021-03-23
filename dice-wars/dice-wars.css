@@ -52,7 +52,6 @@ main {
   border: none;
   border-radius: 15px;
   box-shadow: 0 9px #999;
-  margin-left: 20%;
 }
 
 .button:hover {background-color: rgb(240, 240, 240)}
@@ -61,4 +60,50 @@ main {
   background-color: rgb(240, 240, 240);
   box-shadow: 0 5px rgb(71, 71, 71);;
   transform: translateY(4px);
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #333;
+  border-radius: 15px;
+  margin: 20% auto; /* 20% from the top and centered */
+  padding: 20px;
+  border: 10px solid white;
+  width: 40%; /* Could be more or less, depending on screen size */
+  text-align: center;
+}
+
+/* The Close Button */
+.close {
+  color: rgb(200, 200, 200);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: rgb(240, 240, 240);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#message {
+  font-size: 18pt;
+  font-weight: bold;
+  color: white;
 }

@@ -532,6 +532,30 @@ function Board( teams )
         return turnIndex;
     }
 
+    let getGameStatus = function()
+    {
+        let bonuses = calculateDiceBonus();
+                let color = teams[turnIndex].color;
+                let bonus = bonuses[color];
+         let status = "won";
+        for( let i = 0; i < teams.length; i++ )
+        {
+            let color = teams[i].color;
+            let bonus = bonuses[color];
+            if( i === 0 && bonus === 0 )
+            {
+                status = "lost";
+                break;
+            }
+            else if( i !== 0 && bonus > 0 )
+            {
+                status = "inProgress";
+                break;
+            }
+        }
+        return status;
+    }
+
 	return {
 		"setupBoard": setupBoard,
 		"grid": grid,
@@ -539,6 +563,7 @@ function Board( teams )
 		"getAttackableNodes": getAttackableNodes,
 		"handleClick": handleClick,
 		"advanceTurn": advanceTurn,
-		"getTurnIndex": getTurnIndex
+		"getTurnIndex": getTurnIndex,
+		"getGameStatus": getGameStatus
 	};
 }

@@ -34,6 +34,12 @@ let graphics = new Graphics();
 board.setupBoard();
 graphics.display( board );
 
+let modal = document.getElementById("modal");
+let closeModalButton = document.getElementsByClassName("close")[0];
+closeModalButton.onclick = function() {
+    location.reload();
+}
+
 let endTurn = function()
 {
     board.advanceTurn( graphics, board );
