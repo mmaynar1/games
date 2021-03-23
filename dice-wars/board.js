@@ -452,7 +452,7 @@ function Board( teams )
         if( turnIndex != 0 )
         {
             makeSmartAttacks( turnColor );
-            setTimeout(function(){ advanceTurn(graphics, board); }, 1000 );
+            setTimeout(function(){ advanceTurn(graphics, board); }, 800 );
         }
     }
 
