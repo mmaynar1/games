@@ -37,3 +37,28 @@ main {
     border:2px solid white;
     color: white;
 }
+
+/* Buttons */
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: rgb(71, 71, 71);
+  background-color: rgb(200, 200, 200);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+  margin-left: 20%;
+}
+
+.button:hover {background-color: rgb(240, 240, 240)}
+
+.button:active {
+  background-color: rgb(240, 240, 240);
+  box-shadow: 0 5px rgb(71, 71, 71);;
+  transform: translateY(4px);
+}

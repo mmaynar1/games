@@ -73,8 +73,18 @@ function Graphics()
              span.innerHTML = prefix + bonus;
              playersDiv.appendChild(span);
         }
-        let playerDiv = document.getElementById("player_" + board.getTurnIndex());
+        let turn = board.getTurnIndex();
+        let playerDiv = document.getElementById("player_" + turn);
         playerDiv.style.boxShadow = "0px 0px 15px 2px white";
+        let endTurnButton = document.getElementById("endTurnButton");
+        if( turn == 0 )
+        {
+            endTurnButton.style.display = "initial";
+        }
+        else
+        {
+            endTurnButton.style.display = "none";
+        }
     }
 
     	return {
