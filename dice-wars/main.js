@@ -37,7 +37,14 @@ graphics.display( board );
 let modal = document.getElementById("modal");
 let closeModalButton = document.getElementsByClassName("close")[0];
 closeModalButton.onclick = function() {
-    location.reload();
+    if( document.getElementById("playButton").innerHTML === "Play Again!" )
+    {
+       location.reload();
+    }
+    else
+    {
+        document.getElementById("modal").style.display = "none";
+    }
 }
 
 let endTurn = function()

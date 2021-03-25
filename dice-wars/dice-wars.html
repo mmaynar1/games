@@ -8,7 +8,11 @@
   <body>
     <main>
       <h1>Dice Wars</h1>
-      <h5><a href="https://mitchum.blog/how-to-build-dice-wars-with-javascript/">Back To Blog</a></h5>
+      <h5>
+        <a href="https://mitchum.blog/how-to-build-dice-wars-with-javascript/">How It's Made</a> |
+        <a href="https://github.com/mmaynar1/games/tree/master/dice-wars">Github</a> |
+        <a href="javascript:void(0);" onclick="graphics.showInstructions();">Instructions</a>
+      </h5>
       <div id="grid" class="grid"></div>
       <br>
       <div id="players" class="players" style="width: 400px;">
@@ -23,7 +27,7 @@
         <div class="modal-content">
           <span class="close">&times;</span>
           <p id="message"></p>
-          <button class="button" type="button" onclick="closeModalButton.click();">Play Again!</button>
+          <button id="playButton" class="button" type="button" onclick="closeModalButton.click();">Play Again!</button>
         </div>
 
       </div>

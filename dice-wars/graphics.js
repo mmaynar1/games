@@ -60,7 +60,13 @@ function Graphics()
         let messageBox = document.getElementById("message");
         if( gameStatus === "won" || gameStatus === "lost" )
         {
-            message.innerHTML = "You " + gameStatus + "!";
+            let prize = "participation trophy?"
+            if( gameStatus === "won")
+            {
+                prize = "prize?"
+            }
+            messageBox.innerHTML = "You " + gameStatus + "! " + "<a href=\"https://mitchum.blog/subscribe/\">Claim your " + prize + " </a>" ;
+            document.getElementById("playButton").innerHTML = "Play Again!";
             document.getElementById("modal").style.display = "block";
         }
     }
@@ -88,8 +94,18 @@ function Graphics()
         endTurnButton.style.display = turn == 0 ? "initial" : "none";
     }
 
+    let showInstructions = function()
+    {
+        let messageBox = document.getElementById("message");
+        messageBox.innerHTML = "The object of Minimum Viable Dice Wars is to conquer all of the territory. Each tile has a number representing how many dice are on the tile. A few rules to note:" +
+        "<ul><li>All dice are rolled during attack/defense.</li><li>Defense wins ties.</li><li>At the end of your turn you will receive bonus dice based on your highest number of connected tiles.</li><li>Diagonally connected tiles can be attacked and count towards your bonus.</li>";
+        document.getElementById("modal").style.display = "block";
+        document.getElementById("playButton").innerHTML = "Let's Play!";
+    }
+
     	return {
     		"display": display,
-    		"displayTeams": displayTeams
+    		"displayTeams": displayTeams,
+    		"showInstructions": showInstructions
     	};
 }
