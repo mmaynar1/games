@@ -228,7 +228,7 @@ function Board( teams )
     let calculateDiceBonus = function()
     {
         let bonuses = {};
-        teams.forEach( team => bonuses[team.color] = 0 );
+        teams.forEach( team => bonuses[team.color] = { "count": 0, "indexes": [] } );
 
         for( let y = 0; y < gridSize; y++ )
         {
@@ -238,8 +238,10 @@ function Board( teams )
                 if( node != vacant )
                 {
                     let color = node.team.color;
-                    let connectedNodes = findNumberConnected(y,x,grid);
-                    if( bonuses[color] < connectedNodes )
+                    let connectedIndexes = []
+                    let connectedNodes = findNumberConnected(y,x,grid, connectedIndexes);
+                    connectedNodes.indexes.push( {"x": x, "y": y} );
+                    if( bonuses[color].count < connectedNodes.count )
                     {
                         bonuses[color] = connectedNodes;
                     }
@@ -296,7 +298,7 @@ function Board( teams )
         }
     }
 
-	let findNumberConnected = function(y, x, grid)
+	let findNumberConnected = function(y, x, grid, connectedIndexes)
     {
         //https://stackoverflow.com/questions/21716926/finding-connected-cells-in-a-2d-array
         let canUp = (y - 1 >= 0);
@@ -325,38 +327,46 @@ function Board( teams )
         //todo make some functions you idiot.
         if (canUpRight && grid[y-1][x+1] !== vacant && grid[y-1][x+1].team.color == color && grid[y-1][x+1].checked === false )
         {
-            upRight = findNumberConnected(y-1,x+1,grid);
+            connectedIndexes.push( {"x": x+1, "y": y-1} );
+            upRight = findNumberConnected(y-1,x+1,grid, connectedIndexes).count;
         }
         if (canUpLeft && grid[y-1][x-1] !== vacant && grid[y-1][x-1].team.color == color && grid[y-1][x-1].checked === false )
         {
-            upLeft = findNumberConnected(y-1,x-1,grid);
+            connectedIndexes.push( {"x": x-1, "y": y-1} );
+            upLeft = findNumberConnected(y-1,x-1,grid, connectedIndexes).count;
         }
         if (canDownRight && grid[y+1][x+1] !== vacant && grid[y+1][x+1].team.color == color && grid[y+1][x+1].checked === false )
         {
-            downRight = findNumberConnected(y+1,x+1,grid);
+            connectedIndexes.push( {"x": x+1, "y": y+1} );
+            downRight = findNumberConnected(y+1,x+1,grid, connectedIndexes).count;
         }
         if (canDownLeft && grid[y+1][x-1] !== vacant && grid[y+1][x-1].team.color == color && grid[y+1][x-1].checked === false )
         {
-            downLeft = findNumberConnected(y+1,x-1,grid);
+            connectedIndexes.push( {"x": x-1, "y": y+1} );
+            downLeft = findNumberConnected(y+1,x-1,grid, connectedIndexes).count;
         }
         if (canUp && grid[y-1][x] !== vacant && grid[y-1][x].team.color == color && grid[y-1][x].checked === false )
         {
-            up = findNumberConnected(y-1,x,grid);
+            connectedIndexes.push( {"x": x, "y": y-1} );
+            up = findNumberConnected(y-1,x,grid, connectedIndexes).count;
         }
         if (canDown && grid[y+1][x] !== vacant && grid[y+1][x].team.color == color && grid[y+1][x].checked === false)
         {
-            down = findNumberConnected(y+1,x,grid);
+            connectedIndexes.push( {"x": x, "y": y+1} );
+            down = findNumberConnected(y+1,x,grid, connectedIndexes).count;
         }
         if (canLeft && grid[y][x-1] !== vacant && grid[y][x-1].team.color == color && grid[y][x-1].checked === false)
         {
-            left = findNumberConnected(y,x-1,grid);
+            connectedIndexes.push( {"x": x-1, "y": y} );
+            left = findNumberConnected(y,x-1,grid, connectedIndexes).count;
         }
         if (canRight && grid[y][x+1] !== vacant && grid[y][x+1].team.color == color && grid[y][x+1].checked === false)
         {
-            right = findNumberConnected(y,x+1,grid);
+            connectedIndexes.push( {"x": x+1, "y": y} );
+            right = findNumberConnected(y,x+1,grid, connectedIndexes).count;
         }
 
-        return up + left + right + down + upLeft + upRight + downLeft + downRight + 1;
+        return { "count": up + left + right + down + upLeft + upRight + downLeft + downRight + 1, "indexes": connectedIndexes };
     }
 
     let handleClick = function( x, y )
@@ -460,7 +470,7 @@ function Board( teams )
     {
         let bonuses = calculateDiceBonus();
         let color = teams[turnIndex].color;
-        let bonus = bonuses[color];
+        let bonus = bonuses[color].count;
         let vacancies = true;
         while( bonus > 0 && vacancies )
         {
@@ -536,12 +546,12 @@ function Board( teams )
     {
         let bonuses = calculateDiceBonus();
                 let color = teams[turnIndex].color;
-                let bonus = bonuses[color];
+                let bonus = bonuses[color].count;
          let status = "won";
         for( let i = 0; i < teams.length; i++ )
         {
             let color = teams[i].color;
-            let bonus = bonuses[color];
+            let bonus = bonuses[color].count;
             if( i === 0 && bonus === 0 )
             {
                 status = "lost";

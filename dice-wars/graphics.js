@@ -76,7 +76,7 @@ function Graphics()
              span.classList.add("player");
              span.style.backgroundColor = teams[i].color;
              let prefix = i === 0 ? "P" : "C";
-             let bonus = bonuses[teams[i].color];
+             let bonus = bonuses[teams[i].color].count;
              bonus = bonus.length > 1 ? bonus : " " + bonus;
              span.innerHTML = prefix + bonus;
              playersDiv.appendChild(span);
