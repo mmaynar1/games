@@ -5,6 +5,7 @@ function Board( teams )
 	let grid = Array.from(Array( gridSize ), () => new Array( gridSize ));
 	let turnIndex = 0;
 	let MAX_NODE_VALUE = 8;
+	let storedBonus = {};
 
     let getVacantNodes = function()
     {
@@ -471,6 +472,11 @@ function Board( teams )
         let bonuses = calculateDiceBonus();
         let color = teams[turnIndex].color;
         let bonus = bonuses[color].count;
+        let stored = storedBonus[color];
+        if( stored && stored > 0 )
+        {
+            bonus += stored;
+        }
         let vacancies = true;
         while( bonus > 0 && vacancies )
         {
@@ -493,6 +499,11 @@ function Board( teams )
                     }
                 }
             }
+        }
+
+        if( bonus > 0 )
+        {
+            storedBonus[color] = bonus;
         }
     }
 
