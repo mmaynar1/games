@@ -97,8 +97,8 @@ function Graphics()
     let showInstructions = function()
     {
         let messageBox = document.getElementById("message");
-        messageBox.innerHTML = "The object of Minimum Viable Dice Wars is to conquer all of the territory. Each tile has a number representing how many dice are on the tile. A few rules to note:" +
-        "<ul><li>All dice are rolled during attack/defense.</li><li>Defense wins ties.</li><li>At the end of your turn you will receive bonus dice based on your highest number of connected tiles.</li><li>Diagonally connected tiles can be attacked and count towards your bonus.</li>";
+        messageBox.innerHTML = "The object of Minimum Viable Dice Wars is to conquer all of the tiles. Each tile has a number representing how many dice are on the tile. Click on one of your tiles and select an adjacent tile to attack it. A few rules to note:" +
+        "<ul><li>All dice are rolled during attack/defense.</li><li>Defense wins ties.</li><li>Each tile must have at least 1 die.</li><li>At the end of your turn you will receive bonus dice based on your highest number of connected tiles.</li><li>Diagonally connected tiles can be attacked and count towards your bonus.</li><li>Bonus dice can be stored for later use.</li>";
         document.getElementById("modal").style.display = "block";
         document.getElementById("playButton").innerHTML = "Let's Play!";
     }
