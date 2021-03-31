@@ -399,7 +399,6 @@ function Board( teams )
         {
             if( nodeSelected )
             {
-                //todo attack the node, update grid, and return result to graphics engine
                 if( node.team.color !== turnColor )
                 {
                     let results = applyToEachNode( findAttackables );
