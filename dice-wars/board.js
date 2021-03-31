@@ -325,49 +325,51 @@ function Board( teams )
 
         node.checked = true;
 
-        //todo make some functions you idiot.
-        if (canUpRight && grid[y-1][x+1] !== vacant && grid[y-1][x+1].team.color == color && grid[y-1][x+1].checked === false )
+        if ( canUpRight )
         {
-            connectedIndexes.push( {"x": x+1, "y": y-1} );
-            upRight = findNumberConnected(y-1,x+1,grid, connectedIndexes).count;
+            upRight = findNumberConnectedInDirection( grid, canUpRight, y-1, x+1, color, connectedIndexes );
         }
-        if (canUpLeft && grid[y-1][x-1] !== vacant && grid[y-1][x-1].team.color == color && grid[y-1][x-1].checked === false )
+        if ( canUpLeft )
         {
-            connectedIndexes.push( {"x": x-1, "y": y-1} );
-            upLeft = findNumberConnected(y-1,x-1,grid, connectedIndexes).count;
+            upLeft = findNumberConnectedInDirection( grid, canUpLeft, y-1, x-1, color, connectedIndexes );
         }
-        if (canDownRight && grid[y+1][x+1] !== vacant && grid[y+1][x+1].team.color == color && grid[y+1][x+1].checked === false )
+        if ( canDownRight )
         {
-            connectedIndexes.push( {"x": x+1, "y": y+1} );
-            downRight = findNumberConnected(y+1,x+1,grid, connectedIndexes).count;
+            downRight = findNumberConnectedInDirection( grid, canDownRight, y+1, x+1, color, connectedIndexes );
         }
-        if (canDownLeft && grid[y+1][x-1] !== vacant && grid[y+1][x-1].team.color == color && grid[y+1][x-1].checked === false )
+        if ( canDownLeft )
         {
-            connectedIndexes.push( {"x": x-1, "y": y+1} );
-            downLeft = findNumberConnected(y+1,x-1,grid, connectedIndexes).count;
+            downLeft = findNumberConnectedInDirection( grid, canDownLeft, y+1, x-1, color, connectedIndexes );
         }
-        if (canUp && grid[y-1][x] !== vacant && grid[y-1][x].team.color == color && grid[y-1][x].checked === false )
+        if ( canUp )
         {
-            connectedIndexes.push( {"x": x, "y": y-1} );
-            up = findNumberConnected(y-1,x,grid, connectedIndexes).count;
+            up = findNumberConnectedInDirection( grid, canUp, y-1, x, color, connectedIndexes );
         }
-        if (canDown && grid[y+1][x] !== vacant && grid[y+1][x].team.color == color && grid[y+1][x].checked === false)
+        if ( canDown )
         {
-            connectedIndexes.push( {"x": x, "y": y+1} );
-            down = findNumberConnected(y+1,x,grid, connectedIndexes).count;
+            down = findNumberConnectedInDirection( grid, canDown, y+1, x, color, connectedIndexes );
         }
-        if (canLeft && grid[y][x-1] !== vacant && grid[y][x-1].team.color == color && grid[y][x-1].checked === false)
+        if ( canLeft )
         {
-            connectedIndexes.push( {"x": x-1, "y": y} );
-            left = findNumberConnected(y,x-1,grid, connectedIndexes).count;
+            left = findNumberConnectedInDirection( grid, canLeft, y, x-1, color, connectedIndexes );
         }
-        if (canRight && grid[y][x+1] !== vacant && grid[y][x+1].team.color == color && grid[y][x+1].checked === false)
+        if ( canRight )
         {
-            connectedIndexes.push( {"x": x+1, "y": y} );
-            right = findNumberConnected(y,x+1,grid, connectedIndexes).count;
+            right = findNumberConnectedInDirection( grid, canRight, y, x+1, color, connectedIndexes );
         }
 
         return { "count": up + left + right + down + upLeft + upRight + downLeft + downRight + 1, "indexes": connectedIndexes };
+    }
+
+    let findNumberConnectedInDirection = function(grid, canDirection, y, x, color, connectedIndexes )
+    {
+        let count = 0;
+        if (canDirection && grid[y][x] !== vacant && grid[y][x].team.color == color && grid[y][x].checked === false )
+        {
+            connectedIndexes.push( {"x": x, "y": y} );
+            count = findNumberConnected(y,x,grid, connectedIndexes).count;
+        }
+        return count;
     }
 
     let handleClick = function( x, y )
