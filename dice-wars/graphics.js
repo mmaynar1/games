@@ -65,7 +65,7 @@ function Graphics()
             {
                 prize = "prize?"
             }
-            messageBox.innerHTML = "You " + gameStatus + "! " + "<a href=\"https://mitchum.blog/subscribe/\">Claim your " + prize + " </a>" ;
+            messageBox.innerHTML = "You " + gameStatus + "! " + "<a href=\"https://mitchum.blog/claim-your-prize-subscribe/\">Claim your " + prize + " </a>" ;
             document.getElementById("playButton").innerHTML = "Play Again!";
             document.getElementById("modal").style.display = "block";
         }
