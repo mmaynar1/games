@@ -4,7 +4,7 @@ function Board( teams )
     let occupiedNodeCount = nodeCount - vacantNodeCount;
 	let grid = Array.from(Array( gridSize ), () => new Array( gridSize ));
 	let turnIndex = 0;
-	let MAX_NODE_VALUE = 8;
+	const MAX_NODE_VALUE = 8;
 	let storedBonus = {};
 
     let getVacantNodes = function()
@@ -126,15 +126,23 @@ function Board( teams )
     	let neighbors = [];
     	let x = node.x;
     	let y = node.y;
-    	neighbors.push(getNeighbor(x-1, y-1));
-    	neighbors.push(getNeighbor(x, y-1));
-    	neighbors.push(getNeighbor(x+1, y-1));
-    	neighbors.push(getNeighbor(x+1, y));
-    	neighbors.push(getNeighbor(x-1, y));
-    	neighbors.push(getNeighbor(x-1, y+1));
-    	neighbors.push(getNeighbor(x, y+1));
-    	neighbors.push(getNeighbor(x+1, y+1));
+    	let neighboringCoordinates = getNeighboringCoordinates( x, y );
+    	neighboringCoordinates.forEach(coordinate => neighbors.push(getNeighbor(coordinate.x, coordinate.y)));
     	return neighbors
+    }
+
+    let getNeighboringCoordinates = function( x, y )
+    {
+        let coordinates = [];
+        coordinates.push(new Coordinates(x-1, y-1, "upLeft"));
+        coordinates.push(new Coordinates(x, y-1, "up"));
+        coordinates.push(new Coordinates(x+1, y-1, "upRight"));
+        coordinates.push(new Coordinates(x+1, y, "right"));
+        coordinates.push(new Coordinates(x-1, y, "left"));
+        coordinates.push(new Coordinates(x-1, y+1, "downLeft"));
+        coordinates.push(new Coordinates(x, y+1, "down"));
+        coordinates.push(new Coordinates(x+1, y+1, "downRight"));
+        return coordinates;
     }
 
     let getNeighbor = function( x, y )
@@ -158,17 +166,9 @@ function Board( teams )
     let getAttackableNodes = function( x, y )
     {
         let selectedNode = getNode( x , y );
-
         let nodes = [];
-        nodes.push( getNode( x, y - 1 ) );
-        nodes.push( getNode( x, y + 1 ) );
-        nodes.push( getNode( x + 1, y - 1 ) );
-        nodes.push( getNode( x + 1, y + 1 ) );
-        nodes.push( getNode( x - 1, y - 1 ) );
-        nodes.push( getNode( x - 1, y + 1 ) );
-        nodes.push( getNode( x + 1, y ) );
-        nodes.push( getNode( x - 1, y ) );
-
+        let neighboringCoordinates = getNeighboringCoordinates( x, y );
+        neighboringCoordinates.forEach(coordinate => nodes.push(getNode(coordinate.x, coordinate.y)));
         let attackables = [];
         nodes.forEach( node => addAttackable(attackables, node, selectedNode.team.color ) );
         return attackables;
