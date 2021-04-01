@@ -134,14 +134,23 @@ function Board( teams )
     let getNeighboringCoordinates = function( x, y )
     {
         let coordinates = [];
-        coordinates.push(new Coordinates(x-1, y-1, "upLeft"));
-        coordinates.push(new Coordinates(x, y-1, "up"));
-        coordinates.push(new Coordinates(x+1, y-1, "upRight"));
-        coordinates.push(new Coordinates(x+1, y, "right"));
-        coordinates.push(new Coordinates(x-1, y, "left"));
-        coordinates.push(new Coordinates(x-1, y+1, "downLeft"));
-        coordinates.push(new Coordinates(x, y+1, "down"));
-        coordinates.push(new Coordinates(x+1, y+1, "downRight"));
+        let canUp = (y - 1 >= 0);
+        let canDown = (y + 1 < gridSize);
+        let canRight = (x + 1 < gridSize);
+        let canLeft = (x - 1 >= 0);
+        let canUpRight = canUp && canRight;
+        let canUpLeft = canUp && canLeft;
+        let canDownRight = canDown && canRight;
+        let canDownLeft = canDown && canLeft;
+
+        coordinates.push(new Coordinates(x-1, y-1, "upLeft", canUpLeft));
+        coordinates.push(new Coordinates(x, y-1, "up", canUp));
+        coordinates.push(new Coordinates(x+1, y-1, "upRight", canUpRight));
+        coordinates.push(new Coordinates(x+1, y, "right", canRight));
+        coordinates.push(new Coordinates(x-1, y, "left", canLeft));
+        coordinates.push(new Coordinates(x-1, y+1, "downLeft", canDownLeft));
+        coordinates.push(new Coordinates(x, y+1, "down", canDown));
+        coordinates.push(new Coordinates(x+1, y+1, "downRight", canDownRight));
         return coordinates;
     }
 
@@ -302,72 +311,26 @@ function Board( teams )
 	let findNumberConnected = function(y, x, grid, connectedIndexes)
     {
         //https://stackoverflow.com/questions/21716926/finding-connected-cells-in-a-2d-array
-        let canUp = (y - 1 >= 0);
-        let canDown = (y + 1 < gridSize);
-        let canRight = (x + 1 < gridSize);
-        let canLeft = (x - 1 >= 0);
-        let canUpRight = canUp && canRight;
-        let canUpLeft = canUp && canLeft;
-        let canDownRight = canDown && canRight;
-        let canDownLeft = canDown && canLeft;
-
         let node = grid[y][x];
         let color = node.team.color
-
-        let up = 0;
-        let down = 0;
-        let right = 0;
-        let left = 0;
-        let upRight = 0;
-        let upLeft = 0;
-        let downRight = 0;
-        let downLeft = 0;
-
+        let count = 0;
         node.checked = true;
-
-        if ( canUpRight )
-        {
-            upRight = findNumberConnectedInDirection( grid, canUpRight, y-1, x+1, color, connectedIndexes );
-        }
-        if ( canUpLeft )
-        {
-            upLeft = findNumberConnectedInDirection( grid, canUpLeft, y-1, x-1, color, connectedIndexes );
-        }
-        if ( canDownRight )
-        {
-            downRight = findNumberConnectedInDirection( grid, canDownRight, y+1, x+1, color, connectedIndexes );
-        }
-        if ( canDownLeft )
-        {
-            downLeft = findNumberConnectedInDirection( grid, canDownLeft, y+1, x-1, color, connectedIndexes );
-        }
-        if ( canUp )
-        {
-            up = findNumberConnectedInDirection( grid, canUp, y-1, x, color, connectedIndexes );
-        }
-        if ( canDown )
-        {
-            down = findNumberConnectedInDirection( grid, canDown, y+1, x, color, connectedIndexes );
-        }
-        if ( canLeft )
-        {
-            left = findNumberConnectedInDirection( grid, canLeft, y, x-1, color, connectedIndexes );
-        }
-        if ( canRight )
-        {
-            right = findNumberConnectedInDirection( grid, canRight, y, x+1, color, connectedIndexes );
-        }
-
-        return { "count": up + left + right + down + upLeft + upRight + downLeft + downRight + 1, "indexes": connectedIndexes };
+        let neighboringCoordinates = getNeighboringCoordinates( x, y );
+        neighboringCoordinates.forEach(coordinate => count += findNumberConnectedInDirection( grid, coordinate, color, connectedIndexes ));
+        return { "count": count + 1, "indexes": connectedIndexes };
     }
 
-    let findNumberConnectedInDirection = function(grid, canDirection, y, x, color, connectedIndexes )
+    let findNumberConnectedInDirection = function(grid, coordinate, color, connectedIndexes )
     {
         let count = 0;
-        if (canDirection && grid[y][x] !== vacant && grid[y][x].team.color == color && grid[y][x].checked === false )
+        if ( coordinate.canDirection )
         {
-            connectedIndexes.push( {"x": x, "y": y} );
-            count = findNumberConnected(y,x,grid, connectedIndexes).count;
+            let node = grid[coordinate.y][coordinate.x];
+            if (node !== vacant && node.team.color == color && node.checked === false )
+            {
+                connectedIndexes.push( {"x": coordinate.x, "y": coordinate.y} );
+                count = findNumberConnected(coordinate.y, coordinate.x, grid, connectedIndexes).count;
+            }
         }
         return count;
     }
